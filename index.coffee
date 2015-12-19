@@ -40,14 +40,31 @@ module.exports =
 
 	watch:
 		# Adds the `in-viewport` class when the component is in bounds
-		inViewport: (newValue) -> $(@$el).toggleClass 'in-viewport', newValue
+		inViewport: (newValue) ->
+			console.log @newValue
+			$(@$el).toggleClass 'in-viewport', newValue
 
 	methods:
 		onScroll: ->
-			# Determine the visibility of the component, including optional offsets
-			docViewTop = @$win.scrollTop()
-			docViewBottom = docViewTop + @$win.height()
-			elemTop = @$el.offset().top + @inViewportOffsetTop
-			elemBottom = @$el.offset().top + @$el.outerHeight() + @inViewportOffsetBottom
+			vpWidth   			= @$win.width()
+			vpHeight  			= @$win.height()
+			viewTop         = @$win.scrollTop()
+			viewBottom      = viewTop + vpHeight
+			viewLeft        = @$win.scrollLeft()
+			viewRight       = viewLeft + vpWidth
+			offset          = @$el.offset()
+			_top            = (offset.top )
+			_bottom         = _top + @$el.height()
+			_left           = offset.left
+			_right          = _left + @$el.width()
+			compareTop      = (_bottom + @inViewportOffsetBottom)
+			compareBottom   = (_top + @inViewportOffsetTop)
+			compareLeft     = _right
+			compareRight    = _left
 
-			@inViewport = (elemTop <= docViewBottom) and (elemBottom >= docViewTop)
+			console.log _top, _bottom
+
+			@inViewport = ((compareBottom <= viewBottom) and (compareTop >= viewTop)) and ((compareRight <= viewRight) and (compareLeft >= viewLeft))
+
+
+			console.log @inViewport
