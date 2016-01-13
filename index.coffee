@@ -33,7 +33,7 @@ module.exports =
 		# Call visibility check on init
 		@onScroll()
 
-	detach: ->
+	beforeDestroy: ->
 		# Unregister handlers
 		win.off 'scroll', @onScroll
 		win.off 'resize', @onScroll
@@ -41,7 +41,6 @@ module.exports =
 	watch:
 		# Adds the `in-viewport` class when the component is in bounds
 		inViewport: (newValue) ->
-			console.log @newValue
 			$(@$el).toggleClass 'in-viewport', newValue
 
 	methods:
@@ -62,9 +61,4 @@ module.exports =
 			compareLeft     = _right
 			compareRight    = _left
 
-			console.log _top, _bottom
-
 			@inViewport = ((compareBottom <= viewBottom) and (compareTop >= viewTop)) and ((compareRight <= viewRight) and (compareLeft >= viewLeft))
-
-
-			console.log @inViewport
