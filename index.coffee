@@ -4,13 +4,26 @@ Determines if the view is in visible in the browser window.
 Example usage:
 	Just require the mixin from your component.
 	Use the optional offset props like:
-	large-copy(in-viewport-offset-top="-100" in-viewport-offset-bottom="100")
+
+	large-copy(
+		:in-viewport-offset-top="300"
+		:in-viewport-offset-bottom="0"
+
+		# Only add the `in-viewport` class once per page load
+		:in-viewport-once="false"
+	)
+
 ###
 win = require 'window-event-mediator'
+visibility = require './visibility'
 
 module.exports =
 
-	props: ['inViewportOffsetTop', 'inViewportOffsetBottom']
+	props: [
+		'inViewportOffsetTop'
+		'inViewportOffsetBottom'
+		'inViewportOnce'
+	]
 
 	data: ->
 		inViewport: false
@@ -26,39 +39,30 @@ module.exports =
 		win.on 'scroll', @onScroll
 		win.on 'resize', @onScroll
 
-		# Default offsets to 0
-		@inViewportOffsetTop = 0 if !@inViewportOffsetTop?
-		@inViewportOffsetBottom = 0 if !@inViewportOffsetBottom?
+		# Default settings
+		@inViewportOnce = true if !@inViewportOnce?
 
 		# Call visibility check on init
 		@onScroll()
 
 	beforeDestroy: ->
-		# Unregister handlers
-		win.off 'scroll', @onScroll
-		win.off 'resize', @onScroll
+		@removeHandlers()
 
 	watch:
 		# Adds the `in-viewport` class when the component is in bounds
 		inViewport: (newValue) ->
+			# If the trigger should only happen once, remove the handlers and break
+			return @removeHandlers() if (@inViewportOnce and (@$el.hasClass 'in-viewport'))
+
 			$(@$el).toggleClass 'in-viewport', newValue
 
 	methods:
 		onScroll: ->
-			vpWidth   			= @$win.width()
-			vpHeight  			= @$win.height()
-			viewTop         = @$win.scrollTop()
-			viewBottom      = viewTop + vpHeight
-			viewLeft        = @$win.scrollLeft()
-			viewRight       = viewLeft + vpWidth
-			offset          = @$el.offset()
-			_top            = (offset.top )
-			_bottom         = _top + @$el.height()
-			_left           = offset.left
-			_right          = _left + @$el.width()
-			compareTop      = (_bottom + @inViewportOffsetBottom)
-			compareBottom   = (_top + @inViewportOffsetTop)
-			compareLeft     = _right
-			compareRight    = _left
+			@inViewport = visibility.isInViewport @$el,
+				offsetTop: @inViewportOffsetTop
+				offsetBottom: @inViewportOffsetBottom
 
-			@inViewport = ((compareBottom <= viewBottom) and (compareTop >= viewTop)) and ((compareRight <= viewRight) and (compareLeft >= viewLeft))
+		removeHandlers: ->
+			# Unregister handlers
+			win.off 'scroll', @onScroll
+			win.off 'resize', @onScroll
