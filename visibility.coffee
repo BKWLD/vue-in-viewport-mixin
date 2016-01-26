@@ -1,11 +1,11 @@
 $win = $ window
 
 module.exports =
-	
+
 	isInViewport: ($el, options) ->
 		options = {} if !options?
 		options.offsetTop = 0 if !options.offsetTop?
-		options.offsetBottom = 0 if !options.offsetTop?
+		options.offsetBottom = 0 if !options.offsetBottom?
 
 		vpWidth   			= $win.width()
 		vpHeight  			= $win.height()
