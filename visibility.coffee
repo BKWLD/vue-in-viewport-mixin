@@ -7,8 +7,8 @@ module.exports =
 		options.offsetTop = 0 if !options.offsetTop?
 		options.offsetBottom = 0 if !options.offsetBottom?
 
-		vpWidth   			= $win.width()
-		vpHeight  			= $win.height()
+		vpWidth         = $win.width()
+		vpHeight        = $win.height()
 		viewTop         = $win.scrollTop()
 		viewBottom      = viewTop + vpHeight
 		viewLeft        = $win.scrollLeft()
