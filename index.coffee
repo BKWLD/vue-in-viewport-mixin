@@ -31,6 +31,7 @@ module.exports =
 		$EL: null
 
 	ready: ->
+
 		# Set Properties
 		@$win = $(window)
 		@$EL = $(@$el)
@@ -45,24 +46,27 @@ module.exports =
 		# Call visibility check on init
 		@onInViewportScroll()
 
-	beforeDestroy: ->
-		@removeHandlers()
+	# If comonent is destroyed, clean up listeners
+	beforeDestroy: -> @removeHandlers()
 
-	watch:
-		# Adds the `in-viewport` class when the component is in bounds
-		inViewport: (newValue) ->
-			# If the trigger should only happen once, remove the handlers and break
-			return @removeHandlers() if (@inViewportOnce and (@$EL.hasClass 'in-viewport'))
+	# Adds the `in-viewport` class when the component is in bounds
+	watch: inViewport: (bool) ->
 
-			@$EL.toggleClass 'in-viewport', newValue
+		# If the trigger should only happen once, remove the handlers and break
+		return @removeHandlers() if @inViewportOnce and bool
+
+		# Toggle class
+		@$EL.toggleClass 'in-viewport', bool
 
 	methods:
+
+		# Update viewport status on scroll
 		onInViewportScroll: ->
 			@inViewport = visibility.isInViewport @$EL,
 				offsetTop: @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
 
+		# Unregister handlers
 		removeHandlers: ->
-			# Unregister handlers
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll

@@ -23,4 +23,5 @@ module.exports =
 		compareLeft     = _right
 		compareRight    = _left
 
-		return ((compareBottom <= viewBottom) and (compareTop >= viewTop)) and ((compareRight <= viewRight) and (compareLeft >= viewLeft))
+		return ((compareBottom <= viewBottom) and (compareTop >= viewTop)) and
+			((compareRight <= viewRight) and (compareLeft >= viewLeft))
