@@ -19,42 +19,50 @@ visibility = require './visibility'
 
 module.exports =
 
-	props: [
-		'inViewportOffsetTop'
-		'inViewportOffsetBottom'
-		'inViewportOnce'
-	]
+	# Settings
+	props:
+
+		# Add listeners and check if in viewport immediately
+		inViewportInit:
+			type: 'Boolean'
+			default: true
+
+		# Whether to only update in-viewport class once
+		inViewportOnce:
+			type: 'Boolean'
+			default: true
+
+		# A positive offset triggers "late" when scrolling down
+		inViewportOffsetTop:
+			type: Number
+			default: 0
+
+		# A negative offset triggers "early" when scrolling down
+		inViewportOffsetBottom:
+			type: Number
+			default: 0
 
 	# Boolean stores whether component is in viewport
 	data: -> inViewport: false
 
+	# On added to DOM...
 	ready: ->
-
-		# Cache vars
-		@$EL = $(@$el)
-
-		# Check visibility on scroll and resize(as layout will change)
-		win.on 'scroll', @onInViewportScroll
-		win.on 'resize', @onInViewportScroll
-
-		# Default settings
-		@inViewportOnce = true if !@inViewportOnce?
-
-		# Call visibility check on init
-		@onInViewportScroll()
+		@$EL = $(@$el)  # Cache jQuery selector
+		@addInViewportHandlers() if @inViewportInit # Whether to autorun
 
 	# If comonent is destroyed, clean up listeners
-	beforeDestroy: -> @removeHandlers()
+	beforeDestroy: -> @removeInViewportHandlers()
 
 	# Adds the `in-viewport` class when the component is in bounds
 	watch: inViewport: (bool) ->
 
 		# If the trigger should only happen once, remove the handlers and break
-		return @removeHandlers() if @inViewportOnce and bool
+		return @removeInViewportHandlers() if @inViewportOnce and bool
 
 		# Toggle class
 		@$EL.toggleClass 'in-viewport', bool
 
+	# Public API
 	methods:
 
 		# Update viewport status on scroll
@@ -63,7 +71,13 @@ module.exports =
 				offsetTop: @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
 
+		# Add the handlers
+		addInViewportHandlers: ->
+			win.on 'scroll', @onInViewportScroll
+			win.on 'resize', @onInViewportScroll
+			@onInViewportScroll()
+
 		# Unregister handlers
-		removeHandlers: ->
+		removeInViewportHandlers: ->
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll
