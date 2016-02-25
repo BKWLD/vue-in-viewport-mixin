@@ -56,8 +56,8 @@ module.exports =
 	# Adds the `in-viewport` class when the component is in bounds
 	watch: inViewport: (bool) ->
 
-		# If the trigger should only happen once, remove the handlers and break
-		return @removeInViewportHandlers() if @inViewportOnce and bool
+		# If the trigger should only happen once remove the handlers
+		@removeInViewportHandlers() if @inViewportOnce and bool
 
 		# Toggle class
 		@$EL.toggleClass 'in-viewport', bool
