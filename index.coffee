@@ -25,15 +25,12 @@ module.exports =
 		'inViewportOnce'
 	]
 
-	data: ->
-		inViewport: false
-		$win: null
-		$EL: null
+	# Boolean stores whether component is in viewport
+	data: -> inViewport: false
 
 	ready: ->
 
-		# Set Properties
-		@$win = $(window)
+		# Cache vars
 		@$EL = $(@$el)
 
 		# Check visibility on scroll and resize(as layout will change)
