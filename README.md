@@ -5,8 +5,7 @@ Vue mixin to determine when a DOM element is visible in the client window
 
 Example usage:
 * Just require the mixin from your component.
-
-* Use the optional offset props with the `:` [dynamic syntax](http://vuejs.org/guide/components.html#Literal_vs-_Dynamic) so the value is parsed as a JS number 
+* Use the optional offset props with the `:` [dynamic syntax](http://vuejs.org/guide/components.html#Literal_vs-_Dynamic) so the value is parsed as a JS number.  Numbers between 0 and 1 are treated like percentages of the page height.
 	```
-	large-copy(:in-viewport-offset-top="-100" :in-viewport-offset-bottom="100")
+	large-copy(:in-viewport-offset-top="-100" :in-viewport-offset-bottom="0.5")
 	```

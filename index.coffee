@@ -7,7 +7,7 @@ Example usage:
 
 	large-copy(
 		:in-viewport-offset-top="300"
-		:in-viewport-offset-bottom="20%"
+		:in-viewport-offset-bottom="0.5"
 
 		# Only add the `in-viewport` class once per page load
 		:in-viewport-once="false"
@@ -68,7 +68,7 @@ module.exports =
 
 		# Update viewport status on scroll
 		onInViewportScroll: ->
-			@inViewport =   visibility.isInViewport @$el,
+			@inViewport =   @isInViewport @$el,
 				offsetTop:    @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
 
@@ -82,3 +82,6 @@ module.exports =
 		removeInViewportHandlers: ->
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll
+
+		# Public API for invoking visibility test
+		isInViewport: (el, options) -> visibility.isInViewport(el, options)

@@ -8,26 +8,30 @@ module.exports = isInViewport: (el, options) ->
 	# Require an el
 	return false if !el
 
-	# Make defaults
-	options = {} if !options?
-	options.offsetTop = 0 if !options.offsetTop?
-	options.offsetBottom = 0 if !options.offsetBottom?
+	# Default options
+	options = {} if !options
+	options.offsetTop = 0 if !options.offsetTop
+	options.offsetBottom = 0 if !options.offsetBottom
 
 	# Get Viewport dimensions
 	# http://ryanve.com/lab/dimensions/
 	vp = {}
-	vp.top =    document.body.scrollTop
-	vp.bottom = vp.top + document.documentElement.clientHeight
-	vp.left =   document.body.scrollLeft
-	vp.right =  vp.left + document.documentElement.clientWidth
+	vp.height = document.documentElement.clientHeight
+	vp.width  = document.documentElement.clientWidth
+	vp.top    = document.body.scrollTop
+	vp.bottom = vp.top + vp.height
+	vp.left   = document.body.scrollLeft
+	vp.right  = vp.left + vp.width
+
+	# Support percentage offsets
+	for key in ['offsetTop', 'offsetBottom']
+		options[key] = vp.height * options[key] if 0 < Math.abs(options[key]) < 1
 
 	# Get element dimensions with offsets
-	vm          = el.getBoundingClientRect()
-	vm.top     += options.offsetTop
-	vm.bottom  += options.offsetBottom
+	vm = el.getBoundingClientRect()
 
 	# Test if in viewport
-	vm.top <= vp.bottom and
-	vm.bottom >= vp.top and
+	vm.top + options.offsetTop <= vp.bottom and
+	vm.bottom + options.offsetBottom >= vp.top and
 	vm.left <= vp.right and
 	vm.right >= vp.left
