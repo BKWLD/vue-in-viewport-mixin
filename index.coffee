@@ -7,16 +7,19 @@ Example usage:
 
 	large-copy(
 		:in-viewport-offset-top="300"
-		:in-viewport-offset-bottom="0"
+		:in-viewport-offset-bottom="20%"
 
 		# Only add the `in-viewport` class once per page load
 		:in-viewport-once="false"
 	)
 
 ###
+
+# Deps
 win = require 'window-event-mediator'
 visibility = require './visibility'
 
+# Mixin definiton
 module.exports =
 
 	# Settings
@@ -46,9 +49,7 @@ module.exports =
 	data: -> inViewport: false
 
 	# On added to DOM...
-	ready: ->
-		@$EL = $(@$el)  # Cache jQuery selector
-		@addInViewportHandlers() if @inViewportInit # Whether to autorun
+	ready: -> @addInViewportHandlers() if @inViewportInit # Whether to autorun
 
 	# If comonent is destroyed, clean up listeners
 	beforeDestroy: -> @removeInViewportHandlers()
@@ -60,15 +61,15 @@ module.exports =
 		@removeInViewportHandlers() if @inViewportOnce and bool
 
 		# Toggle class
-		@$EL.toggleClass 'in-viewport', bool
+		$(@$el).toggleClass 'in-viewport', bool
 
 	# Public API
 	methods:
 
 		# Update viewport status on scroll
 		onInViewportScroll: ->
-			@inViewport = visibility.isInViewport @$EL,
-				offsetTop: @inViewportOffsetTop
+			@inViewport =   visibility.isInViewport @$el,
+				offsetTop:    @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
 
 		# Add the handlers

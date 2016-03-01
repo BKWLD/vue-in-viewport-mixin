@@ -1,27 +1,33 @@
-$win = $ window
+# Test if in viewport
+#
+# @param  DOMELement el
+# @param  object     options
+# @return            bool
+module.exports = isInViewport: (el, options) ->
 
-module.exports =
+	# Require an el
+	return false if !el
 
-	isInViewport: ($el, options) ->
-		options = {} if !options?
-		options.offsetTop = 0 if !options.offsetTop?
-		options.offsetBottom = 0 if !options.offsetBottom?
+	# Make defaults
+	options = {} if !options?
+	options.offsetTop = 0 if !options.offsetTop?
+	options.offsetBottom = 0 if !options.offsetBottom?
 
-		vpWidth         = $win.width()
-		vpHeight        = $win.height()
-		viewTop         = $win.scrollTop()
-		viewBottom      = viewTop + vpHeight
-		viewLeft        = $win.scrollLeft()
-		viewRight       = viewLeft + vpWidth
-		offset          = $el.offset()
-		_top            = (offset.top )
-		_bottom         = _top + $el.height()
-		_left           = offset.left
-		_right          = _left + $el.width()
-		compareTop      = (_bottom + options.offsetBottom)
-		compareBottom   = (_top + options.offsetTop)
-		compareLeft     = _right
-		compareRight    = _left
+	# Get Viewport dimensions
+	# http://ryanve.com/lab/dimensions/
+	vp = {}
+	vp.top =    document.body.scrollTop
+	vp.bottom = vp.top + document.documentElement.clientHeight
+	vp.left =   document.body.scrollLeft
+	vp.right =  vp.left + document.documentElement.clientWidth
 
-		return ((compareBottom <= viewBottom) and (compareTop >= viewTop)) and
-			((compareRight <= viewRight) and (compareLeft >= viewLeft))
+	# Get element dimensions with offsets
+	vm          = el.getBoundingClientRect()
+	vm.top     += options.offsetTop
+	vm.bottom  += options.offsetBottom
+
+	# Test if in viewport
+	vm.top <= vp.bottom and
+	vm.bottom >= vp.top and
+	vm.left <= vp.right and
+	vm.right >= vp.left
