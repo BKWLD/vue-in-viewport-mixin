@@ -18,10 +18,6 @@ module.exports = isInViewport: (el, options) ->
 	vp = {}
 	vp.height = document.documentElement.clientHeight
 	vp.width  = document.documentElement.clientWidth
-	vp.top    = document.body.scrollTop
-	vp.bottom = vp.top + vp.height
-	vp.left   = document.body.scrollLeft
-	vp.right  = vp.left + vp.width
 
 	# Support percentage offsets
 	for key in ['offsetTop', 'offsetBottom']
@@ -31,7 +27,7 @@ module.exports = isInViewport: (el, options) ->
 	vm = el.getBoundingClientRect()
 
 	# Test if in viewport
-	vm.top + options.offsetTop <= vp.bottom and
-	vm.bottom + options.offsetBottom >= vp.top and
-	vm.left <= vp.right and
-	vm.right >= vp.left
+	vm.top + options.offsetTop <= vp.height and
+	vm.bottom + options.offsetBottom >= 0 and
+	vm.left <= vp.width and
+	vm.right >= 0
