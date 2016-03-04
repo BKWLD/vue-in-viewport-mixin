@@ -10,7 +10,7 @@ Example usage:
 	large-copy(:in-viewport-offset-top="-100" :in-viewport-offset-bottom="0.5")
 	```
 
-### Directive version
+## Directive version
 
 There is also a directive you can use.  For example:
 
@@ -19,8 +19,28 @@ Vue.directive 'in-viewport', require 'vue-in-viewport-mixin/directive'
 ```
 ```jade
 section(v-in-viewport
-	in-viewport-class='in-viewport'
+	:in-viewport-active='false'
 	:in-viewport-offset-top='-100'
 	:in-viewport-offset-bottom='0.5'
 	:in-viewport-once='false')
+```
+
+## Delaying init
+
+You may want to delay the in-viewport checks from happening until some time after the vm is has been added to the dom.  For instance, if the vm is added to the dom early but is invisible (to allow for media loading), you want to wait to register in viewport behavior until it is displayed.
+
+Set `:in-viewport-active="false"` do disable the auto-activation of the mixin AND the directive.  Then, when you are ready to initialize in-viewport, set `inViewportActive` on the parent *vm*.  Both mixin and directive watch this to toggle their behavior.
+
+Here is an example Vue mixin that accomplishes this:
+
+```coffee
+module.exports =
+
+	# Give this var to all components that don't already have it as a prop
+	data: -> return inViewportActive: null unless @inViewportActive?
+
+	# Set active to false initially and then later active
+	created: ->
+		@inViewportActive = false
+		setTimeout (=> @inViewportActive = true), 1000
 ```

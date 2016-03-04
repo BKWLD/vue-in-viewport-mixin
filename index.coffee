@@ -26,7 +26,7 @@ module.exports =
 	props:
 
 		# Add listeners and check if in viewport immediately
-		inViewportInit:
+		inViewportActive:
 			type: 'Boolean'
 			default: true
 
@@ -53,20 +53,23 @@ module.exports =
 	# Boolean stores whether component is in viewport
 	data: -> inViewport: false
 
-	# On added to DOM...
-	ready: -> @addInViewportHandlers() if @inViewportInit # Whether to autorun
+	# Add handlers when vm is added to dom unless init is false
+	ready: -> @addInViewportHandlers() if @inViewportActive
 
 	# If comonent is destroyed, clean up listeners
 	beforeDestroy: -> @removeInViewportHandlers()
 
-	# Adds the `in-viewport` class when the component is in bounds
-	watch: inViewport: (bool) ->
+	# Vars to watch
+	watch:
 
-		# If the trigger should only happen once remove the handlers
-		@removeInViewportHandlers() if @inViewportOnce and bool
+		# Adds handlers if they weren't added at runtime
+		inViewportActive: (ready) ->
+			@addInViewportHandlers() if ready
 
-		# Toggle class
-		$(@$el).toggleClass(@inViewportClass, bool) if @inViewportClass
+		# Adds the `in-viewport` class when the component is in bounds/
+		inViewport: (visible) ->
+			@removeInViewportHandlers() if @inViewportOnce and visible
+			$(@$el).toggleClass(@inViewportClass, visible) if @inViewportClass
 
 	# Public API
 	methods:
@@ -77,14 +80,18 @@ module.exports =
 				offsetTop:    @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
 
-		# Add the handlers
+		# Add listeners
 		addInViewportHandlers: ->
+			return if @handlersAdded
+			@handlersAdded = true
 			win.on 'scroll', @onInViewportScroll
 			win.on 'resize', @onInViewportScroll
 			@onInViewportScroll()
 
-		# Unregister handlers
+		# Remove listeners
 		removeInViewportHandlers: ->
+			return unless @handlersAdded
+			@handlersAdded = false
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll
 
