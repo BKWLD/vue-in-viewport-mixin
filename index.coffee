@@ -35,6 +35,11 @@ module.exports =
 			type: 'Boolean'
 			default: true
 
+		# Whether to only update in-viewport class once
+		inViewportClass:
+			type: 'string'
+			default: 'in-viewport'
+
 		# A positive offset triggers "late" when scrolling down
 		inViewportOffsetTop:
 			type: Number
@@ -61,7 +66,7 @@ module.exports =
 		@removeInViewportHandlers() if @inViewportOnce and bool
 
 		# Toggle class
-		$(@$el).toggleClass 'in-viewport', bool
+		$(@$el).toggleClass(@inViewportClass, bool) if @inViewportClass
 
 	# Public API
 	methods:

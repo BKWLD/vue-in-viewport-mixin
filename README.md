@@ -9,3 +9,18 @@ Example usage:
 	```
 	large-copy(:in-viewport-offset-top="-100" :in-viewport-offset-bottom="0.5")
 	```
+
+### Directive version
+
+There is also a directive you can use.  For example:
+
+```coffee
+Vue.directive 'in-viewport', require 'vue-in-viewport-mixin/directive'
+```
+```jade
+section(v-in-viewport
+	in-viewport-class='in-viewport'
+	:in-viewport-offset-top='-100'
+	:in-viewport-offset-bottom='0.5'
+	:in-viewport-once='false')
+```
