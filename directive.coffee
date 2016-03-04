@@ -9,7 +9,14 @@ visibility = require './visibility'
 # Directive definition
 module.exports =
 
-	# Settings
+	# Global defaults, duck punch to change
+	inViewportActive:       true
+	inViewportOnce:         true
+	inViewportClass:        'in-viewport'
+	inViewportOffsetTop:    0
+	inViewportOffsetBottom: 0
+
+	# Prop-style settings
 	params: [
 		'in-viewport-active'
 		'in-viewport-once'
@@ -18,17 +25,17 @@ module.exports =
 		'in-viewport-offset-bottom'
 	]
 
-	# Watch for init var to change
-
-	# Listen for scroll events and set default param values
+	# Set default param values and start listening for scrolls
 	bind: ->
 
-		# Set defaults
-		@params.inViewportActive       = true if !@params.inViewportActive?
-		@params.inViewportOnce         = true if !@params.inViewportOnce?
-		@params.inViewportClass        = 'in-viewport' if !@params.inViewportClass?
-		@params.inViewportOffsetTop    = 0 if !@params.inViewportOffsetTop?
-		@params.inViewportOffsetBottom = 0 if !@params.inViewportOffsetBottom?
+		# Set defaults from the global defaults
+		(@params[key] = @[key] unless @params[key]?) for key in [
+			'inViewportActive'
+			'inViewportOnce'
+			'inViewportClass'
+			'inViewportOffsetTop'
+			'inViewportOffsetBottom'
+		]
 
 		# Callback were losing scope unless I explicitly bound it.  And need to
 		# save the reference so it can be effectively unbound.
