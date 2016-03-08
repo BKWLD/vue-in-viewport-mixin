@@ -82,16 +82,16 @@ module.exports =
 
 		# Add listeners
 		addInViewportHandlers: ->
-			return if @handlersAdded
-			@handlersAdded = true
+			return if @inViewportHandlersAdded
+			@inViewportHandlersAdded = true
 			win.on 'scroll', @onInViewportScroll
 			win.on 'resize', @onInViewportScroll
 			@onInViewportScroll()
 
 		# Remove listeners
 		removeInViewportHandlers: ->
-			return unless @handlersAdded
-			@handlersAdded = false
+			return unless @inViewportHandlersAdded
+			@inViewportHandlersAdded = false
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll
 
