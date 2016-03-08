@@ -57,7 +57,7 @@ module.exports =
 	ready: -> @addInViewportHandlers() if @inViewportActive
 
 	# If comonent is destroyed, clean up listeners
-	beforeDestroy: -> @removeInViewportHandlers()
+	destroyed: -> @removeInViewportHandlers()
 
 	# Vars to watch
 	watch:
