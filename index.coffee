@@ -40,6 +40,11 @@ module.exports =
 			type: 'string'
 			default: 'in-viewport'
 
+		# Whether to only update in-viewport class once
+		inViewportEntrelyClass:
+			type: 'string'
+			default: 'in-viewport-entirely'
+
 		# A positive offset triggers "late" when scrolling down
 		inViewportOffsetTop:
 			type: Number
@@ -51,7 +56,9 @@ module.exports =
 			default: 0
 
 	# Boolean stores whether component is in viewport
-	data: -> inViewport: false
+	data: ->
+		inViewport: false
+		inViewportEntirely: false
 
 	# Add handlers when vm is added to dom unless init is false
 	ready: -> @addInViewportHandlers() if @inViewportActive
@@ -71,6 +78,10 @@ module.exports =
 			@removeInViewportHandlers() if @inViewportOnce and visible
 			$(@$el).toggleClass(@inViewportClass, visible) if @inViewportClass
 
+		inViewportEntirely: (visible) ->
+			$(@$el).toggleClass(@inViewportEntrelyClass, visible) if @inViewportEntrelyClass
+
+
 	# Public API
 	methods:
 
@@ -79,6 +90,7 @@ module.exports =
 			@inViewport =   @isInViewport @$el,
 				offsetTop:    @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
+			@inViewportEntirely = @isInViewportEntirely @$el
 
 		# Add listeners
 		addInViewportHandlers: ->
@@ -97,3 +109,7 @@ module.exports =
 
 		# Public API for invoking visibility test
 		isInViewport: (el, options) -> visibility.isInViewport(el, options)
+
+		# Public API for invoking visibility test
+		isInViewportEntirely: (el, options) ->
+			visibility.isFullyVisible el
