@@ -107,9 +107,10 @@ module.exports =
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll
 
-		# Public API for invoking visibility test
+		# Public API for invoking visibility tests
+		
+		# Check if the element is visible at all in the viewport
 		isInViewport: (el, options) -> visibility.isInViewport(el, options)
 
-		# Public API for invoking visibility test
-		isInViewportEntirely: (el, options) ->
-			visibility.isFullyVisible el
+		# Check if the elemetn is entirely visible in the viewport
+		isInViewportEntirely: (el, options) -> visibility.isFullyVisible el
