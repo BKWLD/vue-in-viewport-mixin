@@ -1,6 +1,6 @@
 {
 	"name": "vue-in-viewport-mixin",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"description": "Vue mixin to determine when a DOM element is visible in the client window",
 	"main": "index.coffee",
 	"scripts": {
@@ -17,6 +17,6 @@
 	},
 	"homepage": "https://github.com/BKWLD/vue-in-viewport-mixin#readme",
 	"dependencies": {
-		"window-event-mediator": "bkwld/window-event-mediator"
+		"window-event-mediator": "^0"
 	}
 }
