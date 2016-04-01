@@ -1,22 +1,22 @@
 {
-	"name": "vue-in-viewport-mixin",
-	"version": "0.4.2",
-	"description": "Vue mixin to determine when a DOM element is visible in the client window",
-	"main": "index.coffee",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://thelucre@github.com/BKWLD/vue-in-viewport-mixin.git"
-	},
-	"author": "info@bkwld.com",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/BKWLD/vue-in-viewport-mixin/issues"
-	},
-	"homepage": "https://github.com/BKWLD/vue-in-viewport-mixin#readme",
-	"dependencies": {
-		"window-event-mediator": "^0"
-	}
+  "name": "vue-in-viewport-mixin",
+  "version": "0.4.3",
+  "description": "Vue mixin to determine when a DOM element is visible in the client window",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://thelucre@github.com/BKWLD/vue-in-viewport-mixin.git"
+  },
+  "author": "info@bkwld.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BKWLD/vue-in-viewport-mixin/issues"
+  },
+  "homepage": "https://github.com/BKWLD/vue-in-viewport-mixin#readme",
+  "dependencies": {
+    "window-event-mediator": "^0"
+  }
 }
