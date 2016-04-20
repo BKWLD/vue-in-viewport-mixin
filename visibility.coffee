@@ -26,6 +26,7 @@ module.exports =
 
 		# Get element dimensions with offsets
 		vm = el.getBoundingClientRect()
+		return false if vm.width == 0 && vm.height == 0 # Like if display: none
 
 		# Test if in viewport
 		vm.top + options.offsetTop <= vp.height and
@@ -46,6 +47,7 @@ module.exports =
 
 		# Get element dimensions with offsets
 		vm = el.getBoundingClientRect()
+		return false if vm.width == 0 && vm.height == 0 # Like if display: none
 
 		# Test if in entirely in viewport
 		vm.top >= 0 and
