@@ -4,7 +4,7 @@ Directive version of the main mixin
 
 # Deps
 win = require 'window-event-mediator'
-visibility = require './visibility'
+check = require './check'
 
 # Directive definition
 module.exports =
@@ -75,6 +75,6 @@ module.exports =
 		$(@el).toggleClass(@params.inViewportClass, visible)
 
 	# Check if element is in viewport
-	isInViewport: -> visibility.isInViewport @el,
+	isInViewport: -> check @el,
 		offsetTop:    @params.inViewportOffsetTop
 		offsetBottom: @params.inViewportOffsetBottom

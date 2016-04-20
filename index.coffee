@@ -17,7 +17,7 @@ Example usage:
 
 # Deps
 win = require 'window-event-mediator'
-visibility = require './visibility'
+check = require './check'
 
 # Mixin definiton
 module.exports =
@@ -78,19 +78,18 @@ module.exports =
 			@removeInViewportHandlers() if @inViewportOnce and visible
 			$(@$el).toggleClass(@inViewportClass, visible) if @inViewportClass
 
+		# Adds the `in-viewport-entirely` class when the component is in bounds
 		inViewportEntirely: (visible) ->
 			$(@$el).toggleClass(@inViewportEntrelyClass, visible) if @inViewportEntrelyClass
-
 
 	# Public API
 	methods:
 
-		# Update viewport status on scroll
+		# Run the check function and map it's response to our data attributes
 		onInViewportScroll: ->
-			@inViewport =   @isInViewport @$el,
+			@[prop] = val for prop, val of check @$el,
 				offsetTop:    @inViewportOffsetTop
 				offsetBottom: @inViewportOffsetBottom
-			@inViewportEntirely = @isInViewportEntirely @$el
 
 		# Add listeners
 		addInViewportHandlers: ->
@@ -107,10 +106,14 @@ module.exports =
 			win.off 'scroll', @onInViewportScroll
 			win.off 'resize', @onInViewportScroll
 
+		###
 		# Public API for invoking visibility tests
-		
+		###
+
 		# Check if the element is visible at all in the viewport
-		isInViewport: (el, options) -> visibility.isInViewport(el, options)
+		isInViewport: (el, options) ->
+			check(el, options).inViewport
 
 		# Check if the elemetn is entirely visible in the viewport
-		isInViewportEntirely: (el, options) -> visibility.isFullyVisible el
+		isInViewportEntirely: (el, options) ->
+			check(el, options).isInViewportEntirely
