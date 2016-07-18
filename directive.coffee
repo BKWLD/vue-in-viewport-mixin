@@ -18,11 +18,11 @@ module.exports =
 
 	# Prop-style settings
 	params: [
-		'in-viewport-active'
-		'in-viewport-once'
-		'in-viewport-class'
-		'in-viewport-offset-top'
-		'in-viewport-offset-bottom'
+		'inViewportActive'
+		'inViewportOnce'
+		'inViewportClass'
+		'inViewportOffsetTop'
+		'inViewportOffsetBottom'
 	]
 
 	# Set default param values and start listening for scrolls
@@ -75,6 +75,7 @@ module.exports =
 		$(@el).toggleClass(@params.inViewportClass, visible)
 
 	# Check if element is in viewport
-	isInViewport: -> check @el,
-		offsetTop:    @params.inViewportOffsetTop
-		offsetBottom: @params.inViewportOffsetBottom
+	isInViewport: -> check(@el,
+			offsetTop:    @params.inViewportOffsetTop
+			offsetBottom: @params.inViewportOffsetBottom
+		).inViewport
