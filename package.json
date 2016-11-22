@@ -4,11 +4,10 @@
   "description": "Vue mixin to determine when a DOM element is visible in the client window",
   "main": "index.coffee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn test:e2e",
     "build": "node_modules/.bin/webpack && node_modules/.bin/webpack -p",
     "version": "npm run build && git add -A",
     "postversion": "git push --follow-tags",
-    "test": "yarn test:e2e",
     "test:e2e": "node test/e2e/runner.js"
   },
   "repository": {
@@ -38,6 +37,7 @@
     "nightwatch-helpers": "^1.2.0",
     "phantomjs-prebuilt": "^2.1.13",
     "selenium-server": "^2.53.1",
+    "vue": "^2.1.0",
     "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.8.4"
   }
