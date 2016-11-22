@@ -1,5 +1,11 @@
 // http://nightwatchjs.org/guide#settings-file
+
+// Collect some vars
 var TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER
+	, SELENIUM_HOST = process.env.SELENIUM_HOST || 'localhost'
+	, SELENIUM_PORT = process.env.SELENIUM_PORT || 4444
+
+// Export config
 module.exports = {
 	'src_folders': ['test/e2e/specs'],
 	'output_folder': 'test/e2e/reports',
@@ -18,8 +24,8 @@ module.exports = {
 
 	'test_settings': {
 		'default': {
-			'selenium_port': 4444,
-			'selenium_host': 'localhost',
+			'selenium_port': SELENIUM_PORT,
+			'selenium_host': SELENIUM_HOST
 			'silent': true,
 			'screenshots': {
 				'enabled': true,
