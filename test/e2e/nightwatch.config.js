@@ -4,6 +4,7 @@
 var TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER
 	, SELENIUM_HOST = process.env.SELENIUM_HOST || 'localhost'
 	, SELENIUM_PORT = process.env.SELENIUM_PORT || 4444
+;
 
 // Export config
 module.exports = {
@@ -25,7 +26,7 @@ module.exports = {
 	'test_settings': {
 		'default': {
 			'selenium_port': SELENIUM_PORT,
-			'selenium_host': SELENIUM_HOST
+			'selenium_host': SELENIUM_HOST,
 			'silent': true,
 			'screenshots': {
 				'enabled': true,
