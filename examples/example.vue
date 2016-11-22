@@ -1,6 +1,9 @@
 <template>
 
-<div class='example' :class='classes'></div>
+<div
+	class='example'
+	:class='classes'>
+</div>
 
 </template>
 
@@ -14,12 +17,12 @@ module.exports =
 	mixins: [ inViewport ]
 
 	# Output the current state for inspection by nightwatch
-	computed:
-		classes: ->
-			visible: @inViewport.now
-			fully: @inViewport.fully
-			above: @inViewport.above
-			below: @inViewport.below
+	computed: classes: ->
+		visible: @inViewport.now
+		fully: @inViewport.fully
+		above: @inViewport.above
+		below: @inViewport.below
+		active: @inViewportActive
 
 </script>
 
@@ -45,6 +48,10 @@ body {
 	 * marked by scroll monitor as initially visible.
 	 */
 	margin-bottom: 51px;
+}
+
+.example:not(.active) {
+	opacity: 0.3;
 }
 
 .example.visible {

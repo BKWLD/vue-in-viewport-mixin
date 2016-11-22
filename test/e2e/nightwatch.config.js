@@ -38,6 +38,12 @@ module.exports = {
 			'desiredCapabilities': {
 				'build': `build-${TRAVIS_JOB_NUMBER}`,
 				'tunnel-identifier': TRAVIS_JOB_NUMBER
+			},
+			'screenshots': {
+				'enabled': true,
+				'on_failure': true,
+				'on_error': false,
+				'path': 'test/e2e/screenshots'
 			}
 		},
 

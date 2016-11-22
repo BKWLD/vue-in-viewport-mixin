@@ -1,3 +1,11 @@
+// DRYing up vars w/o getting into page objects
+shared = require('../shared/app');
+first = shared.first;
+second = shared.second;
+
+/**
+ * Test the `once` prop
+ */
 module.exports = {
 
   'should have initial state': function (browser) { browser
@@ -5,16 +13,16 @@ module.exports = {
     .waitForElementVisible('#app', 1000)
 
 		// The first example should be visible initialy
-		.assert.cssClassPresent('.example:nth-child(1)', 'visible')
-		.assert.cssClassPresent('.example:nth-child(1)', 'fully')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'above')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
+		.assert.cssClassPresent(first, 'visible')
+		.assert.cssClassPresent(first, 'fully')
+		.assert.cssClassNotPresent(first, 'above')
+		.assert.cssClassNotPresent(first, 'below')
 
     // The second example should be hidden
-    .assert.cssClassNotPresent('.example:nth-child(2)', 'visible')
-    .assert.cssClassNotPresent('.example:nth-child(2)', 'fully')
-		.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
-    .assert.cssClassPresent('.example:nth-child(2)', 'below')
+    .assert.cssClassNotPresent(second, 'visible')
+    .assert.cssClassNotPresent(second, 'fully')
+		.assert.cssClassNotPresent(second, 'above')
+    .assert.cssClassPresent(second, 'below')
 
 	}, 'should no longer be fully visible after 1px of scroll': function (browser) { browser
 
@@ -22,16 +30,16 @@ module.exports = {
     .execute('scrollTo(0, 1)')
 
     // First is now partially visible
-    .assert.cssClassPresent('.example:nth-child(1)', 'visible')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'fully')
-		.assert.cssClassPresent('.example:nth-child(1)', 'above')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
+    .assert.cssClassPresent(first, 'visible')
+		.assert.cssClassNotPresent(first, 'fully')
+		.assert.cssClassPresent(first, 'above')
+		.assert.cssClassNotPresent(first, 'below')
 
     // And second one is partially visible
-		.assert.cssClassPresent('.example:nth-child(2)', 'visible')
-    .assert.cssClassNotPresent('.example:nth-child(2)', 'fully')
-		.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
-    .assert.cssClassPresent('.example:nth-child(2)', 'below')
+		.assert.cssClassPresent(second, 'visible')
+    .assert.cssClassNotPresent(second, 'fully')
+		.assert.cssClassNotPresent(second, 'above')
+    .assert.cssClassPresent(second, 'below')
 
 	}, 'should not update again if scrolling back to top': function (browser) { browser
 
@@ -39,16 +47,16 @@ module.exports = {
 		.execute('scrollTo(0, 0)')
 
 		// All of the settings from the previous step
-    .assert.cssClassPresent('.example:nth-child(1)', 'visible')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'fully')
-		.assert.cssClassPresent('.example:nth-child(1)', 'above')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
+    .assert.cssClassPresent(first, 'visible')
+		.assert.cssClassNotPresent(first, 'fully')
+		.assert.cssClassPresent(first, 'above')
+		.assert.cssClassNotPresent(first, 'below')
 
 		// All of the settings from the previous step
-		.assert.cssClassPresent('.example:nth-child(2)', 'visible')
-    .assert.cssClassNotPresent('.example:nth-child(2)', 'fully')
-		.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
-    .assert.cssClassPresent('.example:nth-child(2)', 'below')
+		.assert.cssClassPresent(second, 'visible')
+    .assert.cssClassNotPresent(second, 'fully')
+		.assert.cssClassNotPresent(second, 'above')
+    .assert.cssClassPresent(second, 'below')
 
 		// All tests done
 		.end();

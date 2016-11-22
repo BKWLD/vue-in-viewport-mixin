@@ -6,4 +6,13 @@ Vue = require 'vue'
 Vue.component 'example', require './example.vue'
 
 # Init root instance
-new Vue el: '#app'
+window.App = new Vue
+
+	el: '#app'
+
+	# The active value is used by the "delayed" test and will be disabled
+	# initially
+	data: active: false
+
+	# Toggle the active state
+	methods: toggleActive: -> @active = !@active

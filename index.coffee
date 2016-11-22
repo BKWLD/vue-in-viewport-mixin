@@ -20,10 +20,15 @@ module.exports =
 
 	# Bindings that are used by the host component
 	data: -> inViewport:
+
+		# Public props
 		now: null   # Is in viewport
 		fully: null # Is fully in viewport
 		above: null # Is partially or fully above the viewport
 		below: null # Is partially or fully below the viewport
+
+		# Internal props
+		listening: false
 
 	# Init scrollMonitor as soon as added to the DOM
 	mounted: ->
@@ -32,6 +37,15 @@ module.exports =
 
 	# Cleanup on destroy
 	destroyed: -> @scrollMonitor.destroy()
+
+	# Watch props and data
+	watch:
+
+		# Add or remove event handlers handlers
+		inViewportActive: (active) ->
+			if active
+			then @addInViewportHandlers()
+			else @removeInViewportHandlers()
 
 	# Public API
 	methods:
@@ -61,8 +75,8 @@ module.exports =
 			@scrollMonitor.off 'stateChange', @updateInViewport
 
 		# Handle state changes from scrollMonitor
-		updateInViewport: -> @inViewport =
-			now:    @scrollMonitor.isInViewport
-			fully:  @scrollMonitor.isFullyInViewport
-			above:  @scrollMonitor.isAboveViewport
-			below:  @scrollMonitor.isBelowViewport
+		updateInViewport: ->
+			@inViewport.now   = @scrollMonitor.isInViewport
+			@inViewport.fully = @scrollMonitor.isFullyInViewport
+			@inViewport.above = @scrollMonitor.isAboveViewport
+			@inViewport.below = @scrollMonitor.isBelowViewport
