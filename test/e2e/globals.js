@@ -1,5 +1,5 @@
 // Deps
-const sauce = require('../sauce');
+const sauce = require('./sauce');
 
 /**
  * Hooks added to all tests

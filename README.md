@@ -1,4 +1,4 @@
-# Vue In Viewport Mixin
+# Vue In Viewport Mixin [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg?branch=2.x)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
 
 
 Vue mixin to determine when a DOM element is visible in the client window
