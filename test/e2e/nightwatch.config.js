@@ -1,5 +1,8 @@
 // http://nightwatchjs.org/guide#settings-file
 
+// Deps
+path = require('path')
+
 // Collect some vars
 var TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER
 	, SELENIUM_HOST = process.env.SELENIUM_HOST || 'localhost'
@@ -14,6 +17,7 @@ module.exports = {
 	'output_folder': 'test/e2e/reports',
 	'custom_commands_path': ['node_modules/nightwatch-helpers/commands'],
 	'custom_assertions_path': ['node_modules/nightwatch-helpers/assertions'],
+	'globals_path': path.join(__dirname, 'sauce.js'),
 
 	'selenium': {
 		'start_process': true,
@@ -30,18 +34,11 @@ module.exports = {
 			'selenium_port': SELENIUM_PORT,
 			'selenium_host': SELENIUM_HOST,
 			'silent': true,
-			'screenshots': {
-				'enabled': true,
-				'on_failure': true,
-				'on_error': false,
-				'path': 'test/e2e/screenshots'
-			},
-
 			'username' : SAUCE_USERNAME,
 			'access_key' : SAUCE_ACCESS_KEY,
 			'desiredCapabilities': {
-				'build': 'build-'+TRAVIS_JOB_NUMBER,
-				'tunnel-identifier': TRAVIS_JOB_NUMBER,
+				'build': `build-${TRAVIS_JOB_NUMBER}`,
+				'tunnel-identifier': TRAVIS_JOB_NUMBER
 			}
 		},
 
