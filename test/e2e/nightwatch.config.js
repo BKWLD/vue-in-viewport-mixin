@@ -4,6 +4,8 @@
 var TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER
 	, SELENIUM_HOST = process.env.SELENIUM_HOST || 'localhost'
 	, SELENIUM_PORT = process.env.SELENIUM_PORT || 4444
+	, SAUCE_USERNAME = process.env.SAUCE_USERNAME || null
+	, SAUCE_ACCESS_KEY =  process.env.SAUCE_ACCESS_KEY || null
 ;
 
 // Export config
@@ -34,6 +36,9 @@ module.exports = {
 				'on_error': false,
 				'path': 'test/e2e/screenshots'
 			},
+
+			'username' : SAUCE_USERNAME,
+			'access_key' : SAUCE_ACCESS_KEY,
 			'desiredCapabilities': {
 				'build': 'build-'+TRAVIS_JOB_NUMBER,
 				'tunnel-identifier': TRAVIS_JOB_NUMBER,
