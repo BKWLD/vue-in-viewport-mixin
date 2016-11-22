@@ -44,3 +44,9 @@ module.exports =
 		@inViewportActive = false
 		setTimeout (=> @inViewportActive = true), 1000
 ```
+
+
+## Contributing
+
+- Run the examples server with `PORT=3000 node ./server` and go to an example to see the source for the E2E tests.  Like http://localhost:3000/basic/
+- Run `yarn test` to run E2E tests.
