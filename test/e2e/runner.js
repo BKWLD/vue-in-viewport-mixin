@@ -19,7 +19,7 @@ if (i > -1) {
 if (args.indexOf('phantomjs') > -1) {
   process.env.PHANTOMJS = true
 }
-
+console.log(args);
 var runner = spawn('./node_modules/.bin/nightwatch', args, {
   stdio: 'inherit'
 })

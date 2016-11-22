@@ -1,119 +1,57 @@
-###
-Determines if the view is in visible in the browser window.
-
-Example usage:
-	Just require the mixin from your component.
-	Use the optional offset props like:
-
-	large-copy(
-		:in-viewport-offset-top="300"
-		:in-viewport-offset-bottom="0.5"
-
-		# Only add the `in-viewport` class once per page load
-		:in-viewport-once="false"
-	)
-
-###
-
 # Deps
-win = require 'window-event-mediator'
-check = require './check'
+scrollMonitor = require 'scrollmonitor'
 
-# Mixin definiton
+# Mixin definition
 module.exports =
 
-	# Settings
+	# Public interface
 	props:
 
 		# Add listeners and check if in viewport immediately
 		inViewportActive:
-			type: 'Boolean'
+			type: Boolean
 			default: true
 
-		# Whether to only update in-viewport class once
+		# Only update once by default. The assumption is that it will be used for
+		# one-time buildins
 		inViewportOnce:
-			type: 'Boolean'
+			type: Boolean
 			default: true
 
-		# Whether to only update in-viewport class once
-		inViewportClass:
-			type: 'string'
-			default: 'in-viewport'
-
-		# Whether to only update in-viewport class once
-		inViewportEntrelyClass:
-			type: 'string'
-			default: 'in-viewport-entirely'
-
-		# A positive offset triggers "late" when scrolling down
-		inViewportOffsetTop:
-			type: Number
-			default: 0
-
-		# A negative offset triggers "early" when scrolling down
-		inViewportOffsetBottom:
-			type: Number
-			default: 0
-
-	# Boolean stores whether component is in viewport
+	# Bindings that are used by the host component
 	data: ->
-		inViewport: false
-		inViewportEntirely: false
 
-	# Add handlers when vm is added to dom unless init is false
-	ready: -> @addInViewportHandlers() if @inViewportActive
+		# Store the scrollMonitor instance
+		# scrollMonitor: null
 
-	# If comonent is destroyed, clean up listeners
-	destroyed: -> @removeInViewportHandlers()
+		# Scrollmonitor propertoes
+		inViewport:
+			now: null
+			fully: null
+			above: null
+			below: null
 
-	# Vars to watch
-	watch:
+	# Init scrollMonitor as soon as added to the DOM
+	mounted: ->
+		@scrollMonitor = scrollMonitor.create @$el
+		@addInViewportHandlers() if @inViewportActive
 
-		# Adds handlers if they weren't added at runtime
-		inViewportActive: (ready) ->
-			@addInViewportHandlers() if ready
-
-		# Adds the `in-viewport` class when the component is in bounds/
-		inViewport: (visible) ->
-			@removeInViewportHandlers() if @inViewportOnce and visible
-			$(@$el).toggleClass(@inViewportClass, visible) if @inViewportClass
-
-		# Adds the `in-viewport-entirely` class when the component is in bounds
-		inViewportEntirely: (visible) ->
-			$(@$el).toggleClass(@inViewportEntrelyClass, visible) if @inViewportEntrelyClass
+	# Cleanup on destroy
+	destroyed: ->
+		@scrollMonitor.destroy()
 
 	# Public API
 	methods:
 
-		# Run the check function and map it's response to our data attributes
-		onInViewportScroll: ->
-			@[prop] = val for prop, val of check @$el,
-				offsetTop:    @inViewportOffsetTop
-				offsetBottom: @inViewportOffsetBottom
-
 		# Add listeners
 		addInViewportHandlers: ->
-			return if @inViewportHandlersAdded
-			@inViewportHandlersAdded = true
-			win.on 'scroll', @onInViewportScroll
-			win.on 'resize', @onInViewportScroll
-			@onInViewportScroll()
+			method = if @inViewportOnce then 'on' else 'on'
+			@scrollMonitor[method] 'stateChange', @updateInViewport
+			@updateInViewport()
 
-		# Remove listeners
-		removeInViewportHandlers: ->
-			return unless @inViewportHandlersAdded
-			@inViewportHandlersAdded = false
-			win.off 'scroll', @onInViewportScroll
-			win.off 'resize', @onInViewportScroll
-
-		###
-		# Public API for invoking visibility tests
-		###
-
-		# Check if the element is visible at all in the viewport
-		isInViewport: (el, options) ->
-			check(el, options).inViewport
-
-		# Check if the elemetn is entirely visible in the viewport
-		isInViewportEntirely: (el, options) ->
-			check(el, options).isInViewportEntirely
+		# Handle state changes from scrollMonitor
+		updateInViewport: -> @inViewport =
+			now:    @scrollMonitor.isInViewport
+			fully:  @scrollMonitor.isFullyInViewport
+			above:  @scrollMonitor.isAboveViewport
+			below:  @scrollMonitor.isBelowViewport

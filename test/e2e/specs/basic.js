@@ -1,37 +1,51 @@
 module.exports = {
   'basic': function (browser) {
     browser
-    .url('http://localhost:8080/basic/')
+  	  .url('http://localhost:8080/basic/')
       .waitForElementVisible('#app', 1000)
-      .assert.count('li', 4)
-      .assert.count('li a', 3)
 
-      // assert correct href with base
-      .assert.attributeContains('li:nth-child(1) a', 'href', '/basic/')
-      .assert.attributeContains('li:nth-child(2) a', 'href', '/basic/foo')
-      .assert.attributeContains('li:nth-child(3) a', 'href', '/basic/bar')
-      .assert.containsText('.view', 'home')
+			// The first example should be visible initialy
+			.assert.cssClassPresent('.example:nth-child(1)', 'visible')
+			.assert.cssClassPresent('.example:nth-child(1)', 'fully')
+			.assert.cssClassNotPresent('.example:nth-child(1)', 'above')
+			.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
 
-      .click('li:nth-child(2) a')
-      .assert.urlEquals('http://localhost:8080/basic/foo')
-      .assert.containsText('.view', 'foo')
+      // The second example should be hidden
+      .assert.cssClassNotPresent('.example:nth-child(2)', 'visible')
+      .assert.cssClassNotPresent('.example:nth-child(2)', 'fully')
+			.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
+      .assert.cssClassPresent('.example:nth-child(2)', 'below')
 
-      .click('li:nth-child(3) a')
-      .assert.urlEquals('http://localhost:8080/basic/bar')
-      .assert.containsText('.view', 'bar')
+      // Scroll 1px
+      .execute('scrollTo(0,1)')
 
-      .click('li:nth-child(1) a')
-      .assert.urlEquals('http://localhost:8080/basic/')
-      .assert.containsText('.view', 'home')
+      // First is now partially visible
+      .assert.cssClassPresent('.example:nth-child(1)', 'visible')
+			.assert.cssClassNotPresent('.example:nth-child(1)', 'fully')
+			.assert.cssClassPresent('.example:nth-child(1)', 'above')
+			.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
 
-      .click('li:nth-child(4)')
-      .assert.urlEquals('http://localhost:8080/basic/bar')
-      .assert.containsText('.view', 'bar')
+      // And second one is partially visible
+			.assert.cssClassPresent('.example:nth-child(2)', 'visible')
+      .assert.cssClassNotPresent('.example:nth-child(2)', 'fully')
+			.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
+      .assert.cssClassPresent('.example:nth-child(2)', 'below')
 
-    // check initial visit
-    .url('http://localhost:8080/basic/foo')
-      .waitForElementVisible('#app', 1000)
-      .assert.containsText('.view', 'foo')
-      .end()
+			// Scroll a whole page height
+			.execute('scrollTo(0,window.innerHeight)')
+
+			// First is now hidden
+      .assert.cssClassNotPresent('.example:nth-child(1)', 'visible')
+			.assert.cssClassNotPresent('.example:nth-child(1)', 'fully')
+			.assert.cssClassPresent('.example:nth-child(1)', 'above')
+			.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
+
+      // And second one is fully visible
+			.assert.cssClassPresent('.example:nth-child(2)', 'visible')
+      .assert.cssClassPresent('.example:nth-child(2)', 'fully')
+			.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
+      .assert.cssClassNotPresent('.example:nth-child(2)', 'below')
+
+			.end();
   }
 }
