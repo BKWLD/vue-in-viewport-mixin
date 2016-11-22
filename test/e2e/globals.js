@@ -7,7 +7,5 @@ const sauce = require('./sauce');
 module.exports = {
 
 	// Update status in sauce
-	after: function(browser) {
-		sauce();
-	}
+	after: sauce
 }
