@@ -35,7 +35,7 @@ module.exports = {
 				'path': 'test/e2e/screenshots'
 			},
 			'desiredCapabilities': {
-				'build': `build-${TRAVIS_JOB_NUMBER}`,
+				'build': 'build-'+TRAVIS_JOB_NUMBER,
 				'tunnel-identifier': TRAVIS_JOB_NUMBER,
 			}
 		},
