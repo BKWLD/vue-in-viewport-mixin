@@ -38,6 +38,7 @@
     "phantomjs-prebuilt": "^2.1.13",
     "selenium-server": "^2.53.1",
     "vue": "^2.1.0",
+    "vue-loader": "^10.0.0",
     "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.8.4"
   }
