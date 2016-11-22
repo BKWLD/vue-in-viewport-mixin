@@ -17,7 +17,6 @@ module.exports = {
 	'output_folder': 'test/e2e/reports',
 	'custom_commands_path': ['node_modules/nightwatch-helpers/commands'],
 	'custom_assertions_path': ['node_modules/nightwatch-helpers/assertions'],
-	'globals_path': path.join(__dirname, 'globals.js'),
 
 	'selenium': {
 		'start_process': true,
