@@ -8,6 +8,7 @@
     "build": "node_modules/.bin/webpack && node_modules/.bin/webpack -p",
     "version": "npm run build && git add -A",
     "postversion": "git push --follow-tags",
+    "test": "yarn test:e2e",
     "test:e2e": "node test/e2e/runner.js"
   },
   "repository": {
