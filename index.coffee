@@ -16,20 +16,14 @@ module.exports =
 		# one-time buildins
 		inViewportOnce:
 			type: Boolean
-			default: true
+			default: false
 
 	# Bindings that are used by the host component
-	data: ->
-
-		# Store the scrollMonitor instance
-		# scrollMonitor: null
-
-		# Scrollmonitor propertoes
-		inViewport:
-			now: null
-			fully: null
-			above: null
-			below: null
+	data: -> inViewport:
+		now: null   # Is in viewport
+		fully: null # Is fully in viewport
+		above: null # Is partially or fully above the viewport
+		below: null # Is partially or fully below the viewport
 
 	# Init scrollMonitor as soon as added to the DOM
 	mounted: ->
@@ -37,17 +31,34 @@ module.exports =
 		@addInViewportHandlers() if @inViewportActive
 
 	# Cleanup on destroy
-	destroyed: ->
-		@scrollMonitor.destroy()
+	destroyed: -> @scrollMonitor.destroy()
 
 	# Public API
 	methods:
 
 		# Add listeners
 		addInViewportHandlers: ->
-			method = if @inViewportOnce then 'on' else 'on'
+
+			# Don't add twice
+			return if @inViewport.listening
+			@inViewport.listening = true
+
+			# Add appropriate listeners bacsed on `once` prop
+			method = if @inViewportOnce then 'one' else 'on'
 			@scrollMonitor[method] 'stateChange', @updateInViewport
+
+			# Trigger an immediate update
 			@updateInViewport()
+
+		# Remove listeners
+		removeInViewportHandlers: ->
+
+			# Don't remove twice
+			return unless @inViewport.listening
+			@inViewport.listening = false
+
+			# Remove listeners
+			@scrollMonitor.off 'stateChange', @updateInViewport
 
 		# Handle state changes from scrollMonitor
 		updateInViewport: -> @inViewport =

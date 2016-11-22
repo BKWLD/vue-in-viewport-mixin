@@ -1,7 +1,7 @@
 module.exports = {
 
   'should have initial state': function (browser) { browser
-	  .url('http://localhost:8080/basic/')
+	  .url('http://localhost:8080/once/')
     .waitForElementVisible('#app', 1000)
 
 		// The first example should be visible initialy
@@ -33,36 +33,19 @@ module.exports = {
 		.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
     .assert.cssClassPresent('.example:nth-child(2)', 'below')
 
-	}, 'should be not be visible after scrolling past it': function (browser) { browser
+	}, 'should not update again if scrolling back to top': function (browser) { browser
 
-		// Scroll past first example
-		.execute('scrollTo(0, window.innerHeight)')
+		// Scroll back to top
+		.execute('scrollTo(0, 0)')
 
-		// First is now hidden
-    .assert.cssClassNotPresent('.example:nth-child(1)', 'visible')
+		// All of the settings from the previous step
+    .assert.cssClassPresent('.example:nth-child(1)', 'visible')
 		.assert.cssClassNotPresent('.example:nth-child(1)', 'fully')
 		.assert.cssClassPresent('.example:nth-child(1)', 'above')
 		.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
 
-    // And second one is fully visible
+		// All of the settings from the previous step
 		.assert.cssClassPresent('.example:nth-child(2)', 'visible')
-    .assert.cssClassPresent('.example:nth-child(2)', 'fully')
-		.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
-    .assert.cssClassNotPresent('.example:nth-child(2)', 'below')
-
-  }, 'should be visible again after scrolling back to top': function (browser) { browser
-
-		// Scroll back up to top
-		.execute('scrollTo(0, 0)')
-
-		// The first example should be fully visible again
-		.assert.cssClassPresent('.example:nth-child(1)', 'visible')
-		.assert.cssClassPresent('.example:nth-child(1)', 'fully')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'above')
-		.assert.cssClassNotPresent('.example:nth-child(1)', 'below')
-
-    // The second example should be hidden again
-    .assert.cssClassNotPresent('.example:nth-child(2)', 'visible')
     .assert.cssClassNotPresent('.example:nth-child(2)', 'fully')
 		.assert.cssClassNotPresent('.example:nth-child(2)', 'above')
     .assert.cssClassPresent('.example:nth-child(2)', 'below')
