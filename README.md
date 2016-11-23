@@ -6,15 +6,20 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 
 ## Usage
 
-* Just require the mixin from your component.
+* Just require the mixin from your component and use it with `watch`:
 	```js
 	inViewport = require('vue-in-viewport-mixin');
 	module.exports = {
-		mixins: [ inViewport ]
+		mixins: [ inViewport ],
+		watch: {
+			'inViewport.now': function(visible) {
+				console.log('This component is '+( visible ? 'visible' : 'hidden'));
+			}
+		}
 	}
 	```
 
-* Use the optional offset props with the `:` [dynamic syntax](http://vuejs.org/guide/components.html#Literal_vs-_Dynamic) so the value is parsed as a JS number.
+* Use the optional offset props to configure the component:
 	```html
 	<large-copy
 		:in-viewport-offset-top='-100'
@@ -22,7 +27,7 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 	</large-copy>
 	```
 
-* Use data values in your components to trigger animations
+* Use data values _within_ your component to trigger transitions (or do othter things):
 	```html
 	<div class='.large-copy'>
 		<transition name='fade'>
