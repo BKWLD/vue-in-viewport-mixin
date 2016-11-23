@@ -1,6 +1,6 @@
 # Vue In Viewport Mixin [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg?branch=2.x)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
 
-Vue mixin to determine when a DOM element is visible in the client window by updating Vue data values.  You can then use those data values to do things like trigger transitions.
+Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values.  You can then use those data values to do things like trigger transitions.
 
 It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make registering event listeners light and to do the in viewport calculations.
 
