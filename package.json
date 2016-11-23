@@ -35,8 +35,6 @@
     "express": "^4.14.0",
     "express-urlrewrite": "^1.2.0",
     "nightwatch": "^0.9.9",
-    "nightwatch-helpers": "^1.2.0",
-    "phantomjs-prebuilt": "^2.1.13",
     "selenium-server": "^2.53.1",
     "vue": "^2.1.0",
     "vue-loader": "^10.0.0",
