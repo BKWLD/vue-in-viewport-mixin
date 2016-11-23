@@ -52,9 +52,9 @@ The whole point of this package is for you to make use of this data to do stuff.
 {
 	inViewport: {
 		now: Boolean // Is the component currently in the viewport?
-		fully: Boolean // Is the component COMPLETELY in the viewport
-		above: Boolean // Is any part of the component above the viewport
-		below: Boolean // Is any part of the component below the viewport
+		fully: Boolean // Is the component completely in the viewport?
+		above: Boolean // Is any part of the component above the viewport?
+		below: Boolean // Is any part of the component below the viewport?
 	}
 }
 ```
