@@ -12,7 +12,19 @@ window.App = new Vue
 
 	# The active value is used by the "delayed" test and will be disabled
 	# initially
-	data: active: false
+	data:
+		active: false
+		firstOffsetTop: -100
+		firstOffsetBottom: -100
+		secondOffsetTop: 100
 
-	# Toggle the active state
-	methods: toggleActive: -> @active = !@active
+	methods:
+
+		# Toggle the active state
+		toggleActive: -> @active = !@active
+
+		# Reset offsets
+		resetOffsets: ->
+			@firstOffsetTop = 0
+			@firstOffsetBottom = 0
+			@secondOffsetTop = 0

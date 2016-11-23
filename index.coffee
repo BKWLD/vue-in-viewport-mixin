@@ -18,6 +18,17 @@ module.exports =
 			type: Boolean
 			default: false
 
+		# Shared offsets
+		inViewportOffset:
+			type: Number
+			default: 0
+		inViewportOffsetTop:
+			type: Number
+			default: null
+		inViewportOffsetBottom:
+			type: Number
+			default: null
+
 	# Bindings that are used by the host component
 	data: -> inViewport:
 
@@ -30,13 +41,17 @@ module.exports =
 		# Internal props
 		listening: false
 
-	# Init scrollMonitor as soon as added to the DOM
-	mounted: ->
-		@scrollMonitor = scrollMonitor.create @$el
-		@addInViewportHandlers() if @inViewportActive
+	# Use general offset if none are defined
+	computed:
+		inViewportOffsetTopComputed: -> @inViewportOffsetTop ? @inViewportOffset
+		inViewportOffsetBottomComputed: -> @inViewportOffsetBottom ? @inViewportOffset
+		inViewportOffsetComputed: ->
+			top: @inViewportOffsetTopComputed
+			bottom: @inViewportOffsetBottomComputed
 
-	# Cleanup on destroy
-	destroyed: -> @scrollMonitor.destroy()
+	# Lifecycle hooks
+	mounted: -> @inViewportInit()
+	destroyed: -> @inViewportDestroy()
 
 	# Watch props and data
 	watch:
@@ -47,8 +62,26 @@ module.exports =
 			then @addInViewportHandlers()
 			else @removeInViewportHandlers()
 
+		# If the offsets change, need rebuild scrollMonitor instance because it
+		# doesn't offer a way an API to update these values
+		inViewportOffsetComputed:
+			deep: true
+			handler: ->
+				@inViewportDestroy()
+				@inViewportInit()
+
 	# Public API
 	methods:
+
+		# Instantiate
+		inViewportInit: ->
+			@scrollMonitor = scrollMonitor.create @$el, @inViewportOffsetComputed
+			@addInViewportHandlers() if @inViewportActive
+
+		# Tear down
+		inViewportDestroy: ->
+			@scrollMonitor.destroy()
+			@inViewport.listening = false
 
 		# Add listeners
 		addInViewportHandlers: ->
