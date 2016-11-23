@@ -2,7 +2,7 @@
   "name": "vue-in-viewport-mixin",
   "version": "1.0.0",
   "description": "Vue mixin to determine when a DOM element is visible in the client window",
-  "main": "index.coffee",
+  "main": "index.js",
   "scripts": {
     "test": "yarn test:e2e",
     "build": "node_modules/.bin/webpack && node_modules/.bin/webpack -p",
