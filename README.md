@@ -46,12 +46,12 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 
 ## Data
 
-The whole point of this package is for you to make use of this data to do stuff.
+The whole point of this package is for you to make use of this data to do stuff. The following describes the data that is mixed into your component.  Note that all properties are namespaced under `inViewport`.
 
 ```js
-{
+data: {
 	inViewport: {
-		now: Boolean // Is the component currently in the viewport?
+		now: Boolean   // Is the component currently in the viewport?
 		fully: Boolean // Is the component completely in the viewport?
 		above: Boolean // Is any part of the component above the viewport?
 		below: Boolean // Is any part of the component below the viewport?
