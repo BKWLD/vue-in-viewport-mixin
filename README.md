@@ -13,7 +13,7 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 		mixins: [ inViewport ],
 		watch: {
 			'inViewport.now': function(visible) {
-				console.log('This component is '+( visible ? 'visible' : 'hidden'));
+				console.log('This component is '+( visible ? 'in-viewport' : 'hidden'));
 			}
 		}
 	}

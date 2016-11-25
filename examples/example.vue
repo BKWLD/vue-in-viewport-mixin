@@ -18,10 +18,10 @@ module.exports =
 
 	# Output the current state for inspection by nightwatch
 	computed: classes: ->
-		visible: @inViewport.now
-		fully: @inViewport.fully
-		above: @inViewport.above
-		below: @inViewport.below
+		'in-viewport': @inViewport.now
+		'fully-in-viewport': @inViewport.fully
+		'above-viewport': @inViewport.above
+		'below-viewport': @inViewport.below
 		active: @inViewportActive
 
 </script>
