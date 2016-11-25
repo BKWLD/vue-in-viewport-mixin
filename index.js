@@ -112,7 +112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.inViewportInit();
 	  },
 	  destroyed: function() {
-	    return this.inViewportDestroy();
+	    return this.removeInViewportHandlers();
 	  },
 	  watch: {
 	    inViewportActive: function(active) {
@@ -125,30 +125,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    inViewportOffsetComputed: {
 	      deep: true,
 	      handler: function() {
-	        this.inViewportDestroy();
+	        this.removeInViewportHandlers();
 	        return this.inViewportInit();
 	      }
 	    }
 	  },
 	  methods: {
 	    inViewportInit: function() {
-	      this.scrollMonitor = scrollMonitor.create(this.$el, this.inViewportOffsetComputed);
 	      if (this.inViewportActive) {
 	        return this.addInViewportHandlers();
 	      }
 	    },
-	    inViewportDestroy: function() {
-	      this.scrollMonitor.destroy();
-	      return this.inViewport.listening = false;
-	    },
 	    addInViewportHandlers: function() {
-	      var method;
 	      if (this.inViewport.listening) {
 	        return;
 	      }
 	      this.inViewport.listening = true;
-	      method = this.inViewportOnce ? 'one' : 'on';
-	      this.scrollMonitor[method]('stateChange', this.updateInViewport);
+	      this.scrollMonitor = scrollMonitor.create(this.$el, this.inViewportOffsetComputed);
+	      this.scrollMonitor.on('stateChange', this.updateInViewport);
 	      return this.updateInViewport();
 	    },
 	    removeInViewportHandlers: function() {
@@ -156,13 +150,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	      this.inViewport.listening = false;
-	      return this.scrollMonitor.off('stateChange', this.updateInViewport);
+	      if (this.scrollMonitor) {
+	        this.scrollMonitor.destroy();
+	      }
+	      return delete this.scrollMonitor;
 	    },
 	    updateInViewport: function() {
 	      this.inViewport.now = this.scrollMonitor.isInViewport;
 	      this.inViewport.fully = this.scrollMonitor.isFullyInViewport;
 	      this.inViewport.above = this.scrollMonitor.isAboveViewport;
-	      return this.inViewport.below = this.scrollMonitor.isBelowViewport;
+	      this.inViewport.below = this.scrollMonitor.isBelowViewport;
+	      if (this.inViewportOnce && this.inViewport.now) {
+	        return this.removeInViewportHandlers();
+	      }
 	    }
 	  }
 	};
