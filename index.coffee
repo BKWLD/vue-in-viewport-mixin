@@ -51,7 +51,7 @@ module.exports =
 
 	# Lifecycle hooks
 	mounted: -> @inViewportInit()
-	destroyed: -> @inViewportDestroy()
+	destroyed: -> @removeInViewportHandlers()
 
 	# Watch props and data
 	watch:
@@ -62,26 +62,19 @@ module.exports =
 			then @addInViewportHandlers()
 			else @removeInViewportHandlers()
 
-		# If the offsets change, need rebuild scrollMonitor instance because it
-		# doesn't offer a way an API to update these values
+		# If the offsets change, need to rebuild scrollMonitor instance because it
+		# doesn't offer an API to update the offset
 		inViewportOffsetComputed:
 			deep: true
 			handler: ->
-				@inViewportDestroy()
+				@removeInViewportHandlers()
 				@inViewportInit()
 
 	# Public API
 	methods:
 
 		# Instantiate
-		inViewportInit: ->
-			@scrollMonitor = scrollMonitor.create @$el, @inViewportOffsetComputed
-			@addInViewportHandlers() if @inViewportActive
-
-		# Tear down
-		inViewportDestroy: ->
-			@scrollMonitor.destroy()
-			@inViewport.listening = false
+		inViewportInit: -> @addInViewportHandlers() if @inViewportActive
 
 		# Add listeners
 		addInViewportHandlers: ->
@@ -90,11 +83,13 @@ module.exports =
 			return if @inViewport.listening
 			@inViewport.listening = true
 
-			# Add appropriate listeners bacsed on `once` prop
-			method = if @inViewportOnce then 'one' else 'on'
-			@scrollMonitor[method] 'stateChange', @updateInViewport
+			# Create scrollMonitor instance which starts watching scroll
+			@scrollMonitor = scrollMonitor.create @$el, @inViewportOffsetComputed
 
-			# Trigger an immediate update
+			# Start listening for changes
+			@scrollMonitor.on 'stateChange', @updateInViewport
+
+			# Update intiial state, which also handles `once` prop
 			@updateInViewport()
 
 		# Remove listeners
@@ -104,12 +99,18 @@ module.exports =
 			return unless @inViewport.listening
 			@inViewport.listening = false
 
-			# Remove listeners
-			@scrollMonitor.off 'stateChange', @updateInViewport
+			# Destroy instance, which also removes listeners
+			@scrollMonitor.destroy() if @scrollMonitor
+			delete @scrollMonitor
 
 		# Handle state changes from scrollMonitor
 		updateInViewport: ->
+
+			# Update state values
 			@inViewport.now   = @scrollMonitor.isInViewport
 			@inViewport.fully = @scrollMonitor.isFullyInViewport
 			@inViewport.above = @scrollMonitor.isAboveViewport
 			@inViewport.below = @scrollMonitor.isBelowViewport
+
+			# If set to update "once", remove listeners if in viewport
+			@removeInViewportHandlers() if @inViewportOnce and @inViewport.now

@@ -39,7 +39,7 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 ## Props
 
 - `in-viewport-active (true)` - Whether to listen update the mixin data.  Setting to `false` later in the lifecyle will remove listeners and setting back to `true` will re-apply listeners.
-- `in-viewport-once (false)` - Whether to remove listeners once the first event.
+- `in-viewport-once (false)` - Whether to remove listeners once the component enters viewport.  If the component is in viewport when mounted, listeners are never added.
 - `in-viewport-offset (0)` - Sets both `in-viewport-offset-top` and `in-viewport-offset-bottom`
 - `in-viewport-offset-top` - A positive number will make the vm trigger being in the viewport early, before it's actually scrolls into position.  A negative value will do the opposite.
 - `in-viewport-offset-bottom` - See `in-viewport-offset-top`.
@@ -51,7 +51,7 @@ The whole point of this package is for you to make use of this data to do stuff.
 ```js
 data: {
 	inViewport: {
-		now: Boolean   // Is the component currently in the viewport?
+		now: Boolean   // Is some part of the component currently in the viewport?
 		fully: Boolean // Is the component completely in the viewport?
 		above: Boolean // Is any part of the component above the viewport?
 		below: Boolean // Is any part of the component below the viewport?
