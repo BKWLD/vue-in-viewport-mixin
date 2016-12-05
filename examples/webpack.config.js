@@ -25,7 +25,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      'vue': 'vue/dist/vue.js',
+      'vue': 'vue/dist/vue.common.js',
       'vue-in-viewport-mixin': path.join(__dirname, '..', 'index.coffee')
     }
   },
