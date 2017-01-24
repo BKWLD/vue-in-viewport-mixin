@@ -10,17 +10,27 @@ inViewport = (vm, vp, options) ->
 	vm.left <= vp.width and
 	vm.right >= 0
 
-# Test that the vm is fully in the viewport
+# Test that the vm is entirely in the viewport
 inViewportEntirely = (vm, vp, options) ->
 	vm.top + options.offsetTop >= 0 and
 	vm.bottom + options.offsetBottom <= vp.height and
 	vm.left >= 0 and
 	vm.right <= vp.width
 
+# Test that the vm is above the viewport
+aboveViewport = (vm, vp, options) ->
+	(vm.top + vp.height) + options.offsetBottom <= vp.height
+
+# Test that the vm is below the viewport
+belowViewport = (vm, vp, options) ->
+	vm.bottom + options.offsetTop >= vp.height
+
 # Reusable empty response
 nope =
 	inViewport: false
 	inViewportEntirely: false
+	aboveViewport: false
+	belowViewport: false
 
 # Returns an object containing measurements on whether the vm relative to the
 # viewport.
@@ -51,3 +61,5 @@ module.exports = (el, options) ->
 	# Return object containing measurements
 	inViewport:         inViewport(vm, vp, options)
 	inViewportEntirely: inViewportEntirely(vm, vp, options)
+	aboveViewport: 			aboveViewport(vm, vp, options)
+	belowViewport: 			belowViewport(vm, vp, options)

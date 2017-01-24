@@ -59,6 +59,8 @@ module.exports =
 	data: ->
 		inViewport: false
 		inViewportEntirely: false
+		aboveViewport: false
+		belowViewport: false
 
 	# Add handlers when vm is added to dom unless init is false
 	ready: -> @addInViewportHandlers() if @inViewportActive
@@ -95,7 +97,7 @@ module.exports =
 		addInViewportHandlers: ->
 			return if @inViewportHandlersAdded
 			@inViewportHandlersAdded = true
-			win.on 'scroll', @onInViewportScroll
+			win.on 'scroll', @onInViewportScroll, throttle: 0
 			win.on 'resize', @onInViewportScroll
 			@onInViewportScroll()
 

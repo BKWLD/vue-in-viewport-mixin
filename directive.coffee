@@ -71,6 +71,8 @@ module.exports =
 	# Update viewport staus
 	onInViewportScroll: ->
 		visible = @isInViewport()
+		above = @isAboveViewport()
+		below = @isBelowViewport()
 		@removeHandlers() if @params.inViewportOnce and visible
 		$(@el).toggleClass(@params.inViewportClass, visible)
 
@@ -79,3 +81,15 @@ module.exports =
 			offsetTop:    @params.inViewportOffsetTop
 			offsetBottom: @params.inViewportOffsetBottom
 		).inViewport
+
+	# Check if element is above viewport
+	isAboveViewport: -> check(@el,
+			offsetTop:    @params.inViewportOffsetTop
+			offsetBottom: @params.inViewportOffsetBottom
+		).aboveViewport
+
+	# Check if element is below viewport
+	isBelowViewport: -> check(@el,
+			offsetTop:    @params.inViewportOffsetTop
+			offsetBottom: @params.inViewportOffsetBottom
+		).belowViewport
