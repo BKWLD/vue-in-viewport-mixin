@@ -1,4 +1,4 @@
-# Vue In Viewport Mixin [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
+# Vue In Viewport Mixin [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg?branch=master)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
 
 Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values.  You can then use those data values to do things like trigger transitions.
 
