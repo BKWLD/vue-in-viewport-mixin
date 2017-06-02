@@ -27,22 +27,22 @@ module.exports =
 
 		# Add listeners and check if in viewport immediately
 		inViewportActive:
-			type: 'Boolean'
+			type: Boolean
 			default: true
 
 		# Whether to only update in-viewport class once
 		inViewportOnce:
-			type: 'Boolean'
+			type: Boolean
 			default: true
 
 		# Whether to only update in-viewport class once
 		inViewportClass:
-			type: 'string'
+			type: String
 			default: 'in-viewport'
 
 		# Whether to only update in-viewport class once
 		inViewportEntrelyClass:
-			type: 'string'
+			type: String
 			default: 'in-viewport-entirely'
 
 		# A positive offset triggers "late" when scrolling down
