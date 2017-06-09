@@ -55,6 +55,12 @@ module.exports =
 			type: Number
 			default: 0
 
+		# Whether to compare the viewport width in deciding whether something is
+		# within the viewport
+		inViewportConsiderWidth:
+			type: Boolean
+			default: false
+
 	# Boolean stores whether component is in viewport
 	data: ->
 		inViewport: false
@@ -90,8 +96,9 @@ module.exports =
 		# Run the check function and map it's response to our data attributes
 		onInViewportScroll: ->
 			@[prop] = val for prop, val of check @$el,
-				offsetTop:    @inViewportOffsetTop
-				offsetBottom: @inViewportOffsetBottom
+				offsetTop:     @inViewportOffsetTop
+				offsetBottom:  @inViewportOffsetBottom
+				considerWidth: @inViewportConsiderWidth
 
 		# Add listeners
 		addInViewportHandlers: ->

@@ -7,15 +7,15 @@
 inViewport = (vm, vp, options) ->
 	vm.top + options.offsetTop <= vp.height and
 	vm.bottom + options.offsetBottom >= 0 and
-	vm.left <= vp.width and
-	vm.right >= 0
+	(vp.width == undefined or vm.left <= vp.width) and
+	(vp.width == undefined or vm.right >= 0)
 
 # Test that the vm is entirely in the viewport
 inViewportEntirely = (vm, vp, options) ->
 	vm.top + options.offsetTop >= 0 and
 	vm.bottom + options.offsetBottom <= vp.height and
-	vm.left >= 0 and
-	vm.right <= vp.width
+	(vp.width == undefined or vm.left >= 0) and
+	(vp.width == undefined or vm.right <= vp.width)
 
 # Test that the vm is above the viewport
 aboveViewport = (vm, vp, options) ->
@@ -48,7 +48,7 @@ module.exports = (el, options) ->
 	# http://ryanve.com/lab/dimensions/
 	vp = {}
 	vp.height = document.documentElement.clientHeight
-	vp.width  = document.documentElement.clientWidth
+	vp.width  = document.documentElement.clientWidth if options.considerWidth
 
 	# Support percentage offsets
 	for key in ['offsetTop', 'offsetBottom']
