@@ -27,7 +27,7 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 	</large-copy>
 	```
 
-* Use data values _within_ your component to trigger transitions (or do othter things):
+* Use data values _within_ your component to trigger transitions (or do other things):
 	```html
 	<div class='.large-copy'>
 		<transition name='fade'>
