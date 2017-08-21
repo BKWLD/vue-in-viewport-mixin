@@ -2,7 +2,7 @@
 
 Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values.  You can then use those data values to do things like trigger transitions.
 
-You may want to check out the directive vesion of this package: (vue-in-viewport-directive)[https://github.com/BKWLD/vue-in-viewport-directive].
+You may want to check out the directive vesion of this package: [vue-in-viewport-directive](https://github.com/BKWLD/vue-in-viewport-directive).
 
 It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make registering event listeners light and to do the in viewport calculations.
 
