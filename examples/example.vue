@@ -13,7 +13,7 @@
 inViewport = require 'vue-in-viewport-mixin'
 module.exports =
 
-	# Use the miixin that is being tested
+	# Use the mixin that is being tested
 	mixins: [ inViewport ]
 
 	# Output the current state for inspection by nightwatch
