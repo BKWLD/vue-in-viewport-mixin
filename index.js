@@ -109,7 +109,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  mounted: function() {
-	    return this.inViewportInit();
+	    return this.$nextTick(this.inViewportInit);
 	  },
 	  destroyed: function() {
 	    return this.removeInViewportHandlers();
