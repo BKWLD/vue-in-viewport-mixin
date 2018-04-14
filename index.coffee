@@ -50,7 +50,7 @@ module.exports =
 			bottom: @inViewportOffsetBottomComputed
 
 	# Lifecycle hooks
-	mounted: -> @inViewportInit()
+	mounted: -> @$nextTick(@inViewportInit)
 	destroyed: -> @removeInViewportHandlers()
 
 	# Watch props and data
