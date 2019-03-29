@@ -68,6 +68,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      type: Boolean,
 	      "default": false
 	    },
+	    inViewportContainer: {
+	      type: String,
+	      "default": null
+	    },
 	    inViewportOffset: {
 	      type: Number,
 	      "default": 0
@@ -141,7 +145,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	      this.inViewport.listening = true;
-	      this.scrollMonitor = scrollMonitor.create(this.$el, this.inViewportOffsetComputed);
+	      if (this.inViewportContainer) {
+	        this.scrollMonitor = (scrollMonitor.createContainer(this.inViewportContainer)).create(this.$el, this.inViewportOffsetComputed);
+	      } else {
+	        this.scrollMonitor = scrollMonitor.create(this.$el, this.inViewportOffsetComputed);
+	      }
 	      this.scrollMonitor.on('stateChange', this.updateInViewport);
 	      return this.updateInViewport();
 	    },

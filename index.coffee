@@ -18,6 +18,10 @@ module.exports =
 			type: Boolean
 			default: false
 
+		inViewportContainer:
+			type: String
+			default: null
+
 		# Shared offsets
 		inViewportOffset:
 			type: Number
@@ -84,7 +88,10 @@ module.exports =
 			@inViewport.listening = true
 
 			# Create scrollMonitor instance which starts watching scroll
-			@scrollMonitor = scrollMonitor.create @$el, @inViewportOffsetComputed
+			if @inViewportContainer
+				@scrollMonitor = (scrollMonitor.createContainer @inViewportContainer).create @$el, @inViewportOffsetComputed
+			else
+				@scrollMonitor = scrollMonitor.create @$el, @inViewportOffsetComputed
 
 			# Start listening for changes
 			@scrollMonitor.on 'stateChange', @updateInViewport
