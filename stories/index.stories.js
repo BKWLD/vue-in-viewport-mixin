@@ -13,13 +13,13 @@ import Box from './Box'
 
 // Shared props
 const props = ({
-  marginTop = '100vh',
-  marginBottom = '100vh',
+  marginTop = 'calc(100vh + 1px)',
+  marginBottom = 'calc(100vh + 1px)',
   height = '',
   inViewportActive = true,
   inViewportOnce = false,
   inViewportRootMargin = undefined,
-  inViewportThreshold = [0, .8172248, 1],
+  inViewportThreshold = [0, 1],
 }) => { return {
   marginTop: { default: text('CSS margin-top', marginTop) },
   marginBottom: { default: text('CSS margin-bottom', marginBottom) },

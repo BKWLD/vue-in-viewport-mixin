@@ -4,12 +4,14 @@ An example box that uses the in-viewport-mixin
 
 <template>
 
-<ul class="box">
-	<li>inViewport.now: <b>{{ inViewport.now ? 'Yes' : 'No' }}</b></li>
-	<li>inViewport.fully: <b>{{ inViewport.fully ? 'Yes' : 'No' }}</b></li>
-	<li>inViewport.above: <b>{{ inViewport.above ? 'Yes' : 'No' }}</b></li>
-	<li>inViewport.below: <b>{{ inViewport.below ? 'Yes' : 'No' }}</b></li>
-</ul>
+<div class="box">
+	<ul class="status">
+		<li>inViewport.now: <b>{{ inViewport.now ? 'Yes' : 'No' }}</b></li>
+		<li>inViewport.fully: <b>{{ inViewport.fully ? 'Yes' : 'No' }}</b></li>
+		<li>inViewport.above: <b>{{ inViewport.above ? 'Yes' : 'No' }}</b></li>
+		<li>inViewport.below: <b>{{ inViewport.below ? 'Yes' : 'No' }}</b></li>
+	</ul>
+</div>
 
 </template>
 
@@ -27,17 +29,25 @@ export default {
 <style scoped>
 
 .box {
-	
-	/* Make a box */
 	width: 300px;
-	background: grey;
-	padding: 10px 30px;
+	height: 200px;
+	background: linear-gradient(#39d6d4, #1ca7fd)
+}
+
+.status {	
+	position: fixed;
+	top: 0;
+	right: 0;
+	background: #F6F9FC;
+	list-style: none;
+	padding: 10px;
+	margin: 0;
 	
-	/* Stroybook font styles */
 	-webkit-font-smoothing: antialiased;
 	font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
-	color: white;
 	line-height: 1.4;
+	font-size: 13px;
+	text-align: right;
 }
 
 </style>

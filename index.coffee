@@ -43,10 +43,28 @@ export default
 
 		# Internal props
 		listening: false
+		maxThreshold: 1
 
 	# Lifecycle hooks
 	mounted: -> @$nextTick(@inViewportInit)
 	destroyed: -> @removeInViewportHandlers()
+
+	computed:
+		
+		# Add the maxThreshold to the @inViewportThreshold prop so that the handler
+		# is fired for elements that are talled than the viewport
+		inViewportThresholdWithMax: ->
+			
+			# Support number and array thresholds
+			threshold = 
+				if typeof @inViewportThreshold == 'object'
+				then @inViewportThreshold
+				else [ @inViewportThreshold ]
+			
+			# Add only if not already in the threshold list
+			if @inViewport.maxThreshold in threshold
+			then threshold
+			else threshold.concat @inViewport.maxThreshold
 
 	# Watch props and data
 	watch:
@@ -57,15 +75,18 @@ export default
 			then @addInViewportHandlers()
 			else @removeInViewportHandlers()
 
-		# If the offsets change, need to re-init the observer
-		inViewportOffsetComputed:
-			deep: true
-			handler: ->
-				@removeInViewportHandlers()
-				@inViewportInit()
+		# If any of the Observer options change, re-init
+		inViewportRootMargin: -> @reInitInViewportMixin()
+		inViewportRoot: -> @reInitInViewportMixin()
+		inViewportThresholdWithMax: -> @reInitInViewportMixin()
 
 	# Public API
 	methods:
+
+		# Re-init
+		reInitInViewportMixin: ->
+			@removeInViewportHandlers()
+			@inViewportInit()
 
 		# Instantiate
 		inViewportInit: -> @addInViewportHandlers() if @inViewportActive
@@ -78,7 +99,6 @@ export default
 			@inViewport.listening = true
 
 			# Create IntersectionObserver instance
-			console.log @inViewportRoot
 			@inViewportObserver = new IntersectionObserver @updateInViewport,
 				root: switch typeof @inViewportRoot
 					when 'function' then @inViewportRoot()
@@ -86,9 +106,9 @@ export default
 					when 'object' then @inViewportRoot # Expects to be a DOMElement
 					else undefined
 				rootMargin: @inViewportRootMargin
-				threshold: @inViewportThreshold
+				threshold: @inViewportThresholdWithMax
 			
-			# Add handler
+			# Start listening
 			@inViewportObserver.observe @$el
 		
 		# Remove listeners
@@ -105,14 +125,20 @@ export default
 		# Handle state changes from scrollMonitor.  There should only ever be one
 		# entry
 		updateInViewport: ([entry]) ->
-			console.log entry
-			console.log entry.rootBounds.height / entry.boundingClientRect.height 
-
-			# Update state values
+		
+			# Get the maximum threshold ratio, which is less than 1 when the
+			# element is taller than the viewport
+			@inViewport.maxThreshold = Math.min 1, 
+				entry.rootBounds.height / entry.boundingClientRect.height
+				
+			# Update state values. It was necessary to include "or equal to" here
+			# because the threshold trigger fires when the sites may equal each other.
+			# Without this, the appeared stuck when the two tops (for instance) were
+			# exactly equal.
 			@inViewport.now = entry.isIntersecting
-			@inViewport.fully = entry.intersectionRatio >= 1
-			@inViewport.above = entry.boundingClientRect.top < entry.rootBounds.top
-			@inViewport.below = entry.boundingClientRect.bottom > entry.rootBounds.bottom
-
+			@inViewport.fully = entry.intersectionRatio >= @inViewport.maxThreshold
+			@inViewport.above = entry.boundingClientRect.top <= entry.rootBounds.top
+			@inViewport.below = entry.boundingClientRect.bottom >= entry.rootBounds.bottom
+						
 			# If set to update "once", remove listeners if in viewport
 			@removeInViewportHandlers() if @inViewportOnce and @inViewport.now
