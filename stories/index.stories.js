@@ -11,28 +11,60 @@ import {
 // Simple component to test with
 import Box from './Box'
 
-// Helper for default properties
-
 // Shared props
 const props = ({
   marginTop = '100vh',
   marginBottom = '100vh',
+  height = '',
   inViewportActive = true,
   inViewportOnce = false,
   inViewportRootMargin = undefined,
-  inViewportRoot = undefined,
-  inViewportThreshold = [0,1],
+  inViewportThreshold = [0, .8172248, 1],
 }) => { return {
   marginTop: { default: text('CSS margin-top', marginTop) },
   marginBottom: { default: text('CSS margin-bottom', marginBottom) },
+  height: { default: text('CSS height', height) },
   
   inViewportActive: { default: boolean('inViewportActive', inViewportActive) },
   inViewportOnce: { default: boolean('inViewportOnce', inViewportOnce) },
   
   inViewportRootMargin: { default: text('inViewportRootMargin', inViewportRootMargin) },
-  inViewportRoot: { default: text('inViewportRoot', inViewportRoot) },
   inViewportThreshold: { default: object('inViewportThreshold', inViewportThreshold) },
+  inViewportRoot: { default: '.viewport' },
 }}
+
+// Shared box template.  I had to make an artifical viewport box because
+// I couldn't set the iframe that Storybook uses as the viewport but the
+// without that, the viewport of the parent document was getting measured,
+// which was too tall
+// https://github.com/w3c/IntersectionObserver/issues/283
+const box = `
+  <div class='viewport' style='
+    width: 100vw; height: 100vh;
+    top: 0; left: 0;
+    position: fixed;
+    overflow: auto;
+  '>
+    <box 
+      :style='{ 
+        marginTop: marginTop,
+        marginBottom: marginBottom,
+        height: height,
+      }'
+      :inViewportActive='inViewportActive'
+      :inViewportOnce='inViewportOnce'
+      :inViewportRootMargin='inViewportRootMargin'
+      :inViewportRoot='inViewportRoot'
+      :inViewportThreshold='inViewportThreshold'
+    />
+  </div>`
+
+// Scroll down to box
+const initiallyHiddenBox = `
+  <div>
+    <p>👇👇👇👇👇👇👇👇👇</p>
+    ${box}
+  </div>`
 
 // Create a bucket of stories
 addDecorator(withKnobs)
@@ -41,63 +73,43 @@ storiesOf('Examples', module)
   .add('Initially visible', () => ({
     components: { Box },
     props: props({ marginTop: '0vh' }),
-    template: `<div>
-      <box 
-        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
-        :inViewportActive='inViewportActive'
-        :inViewportOnce='inViewportOnce'
-        :inViewportRootMargin='inViewportRootMargin'
-        :inViewportRoot='inViewportRoot'
-        :inViewportThreshold='inViewportThreshold'
-      />
-      </div>`,
+    template: box,
   }))
   
   .add('Scroll to reveal', () => ({
     components: { Box },
     props: props({}),
-    template: `<div>
-      <p>👇👇👇👇👇👇👇👇👇</p>
-      <box 
-        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
-        :inViewportActive='inViewportActive'
-        :inViewportOnce='inViewportOnce'
-        :inViewportRootMargin='inViewportRootMargin'
-        :inViewportRoot='inViewportRoot'
-        :inViewportThreshold='inViewportThreshold'
-      />
-      </div>`,
+    template: initiallyHiddenBox,
   }))
   
   .add('Trigger once', () => ({
     components: { Box },
     props: props({ inViewportOnce: true }),
-    template: `<div>
-      <p>👇👇👇👇👇👇👇👇👇</p>
-      <box 
-        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
-        :inViewportActive='inViewportActive'
-        :inViewportOnce='inViewportOnce'
-        :inViewportRootMargin='inViewportRootMargin'
-        :inViewportRoot='inViewportRoot'
-        :inViewportThreshold='inViewportThreshold'
-      />
-      </div>`,
+    template: initiallyHiddenBox,
   }))
   
   .add('Initially inactive', () => ({
     components: { Box },
     props: props({ inViewportActive: false }),
-    template: `<div>
-      <p>👇👇👇👇👇👇👇👇👇</p>
-      <box 
-        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
-        :inViewportActive='inViewportActive'
-        :inViewportOnce='inViewportOnce'
-        :inViewportRootMargin='inViewportRootMargin'
-        :inViewportRoot='inViewportRoot'
-        :inViewportThreshold='inViewportThreshold'
-      />
-      </div>`,
+    template: initiallyHiddenBox,
   }))
+  
+  .add('Trigger late', () => ({
+    components: { Box },
+    props: props({ inViewportRootMargin: '-20% 0%' }),
+    template: initiallyHiddenBox,
+  }))
+  
+  .add('Trigger early', () => ({
+    components: { Box },
+    props: props({ inViewportRootMargin: '200px 0%' }),
+    template: initiallyHiddenBox,
+  }))
+  
+  .add('Full height', () => ({
+    components: { Box },
+    props: props({ height: '120vh' }),
+    template: initiallyHiddenBox,
+  }))
+
 

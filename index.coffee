@@ -23,14 +23,14 @@ export default
 			
 		# Specify the IntersectionObserver root to use.
 		inViewportRoot:
-			type: String
+			type: String|Function|Object
 			default: undefined
 
 		# The IntersectionObserver threshold defines the intersection ratios that
 		# fire the observer callback
 		inViewportThreshold: 
 			type: Number|Array
-			default: -> [0,1] # Fire on enter/leave and fully enter/leave
+			default: -> [0, 1] # Fire on enter/leave and fully enter/leave
 		
 	# Bindings that are used by the host component
 	data: -> inViewport:
@@ -78,14 +78,19 @@ export default
 			@inViewport.listening = true
 
 			# Create IntersectionObserver instance
+			console.log @inViewportRoot
 			@inViewportObserver = new IntersectionObserver @updateInViewport,
-				root: document.querySelector @inViewportRoot if @inViewportRoot
+				root: switch typeof @inViewportRoot
+					when 'function' then @inViewportRoot()
+					when 'string' then document.querySelector @inViewportRoot
+					when 'object' then @inViewportRoot # Expects to be a DOMElement
+					else undefined
 				rootMargin: @inViewportRootMargin
 				threshold: @inViewportThreshold
 			
 			# Add handler
 			@inViewportObserver.observe @$el
-
+		
 		# Remove listeners
 		removeInViewportHandlers: ->
 
@@ -101,12 +106,13 @@ export default
 		# entry
 		updateInViewport: ([entry]) ->
 			console.log entry
+			console.log entry.rootBounds.height / entry.boundingClientRect.height 
 
 			# Update state values
 			@inViewport.now = entry.isIntersecting
-			@inViewport.fully = entry.intersectionRatio == 1
-			# @inViewport.above = @scrollMonitor.isAboveViewport
-			# @inViewport.below = @scrollMonitor.isBelowViewport
+			@inViewport.fully = entry.intersectionRatio >= 1
+			@inViewport.above = entry.boundingClientRect.top < entry.rootBounds.top
+			@inViewport.below = entry.boundingClientRect.bottom > entry.rootBounds.bottom
 
 			# If set to update "once", remove listeners if in viewport
 			@removeInViewportHandlers() if @inViewportOnce and @inViewport.now
