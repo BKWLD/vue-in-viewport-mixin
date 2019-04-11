@@ -7,10 +7,11 @@
     "test": "test:e2e",
     "build": "coffee -ct index.coffee",
     "version": "npm run build && git add -A",
-    "postversion": "git push --follow-tags",
+    "postversion": "git push --follow-tags && yarn deploy-storybook",
     "test:e2e": "cypress run",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "@babel/preset-env": "^7.4.3",
     "@storybook/addon-knobs": "^5.0.6",
     "@storybook/addons": "^5.0.6",
+    "@storybook/storybook-deployer": "^2.8.1",
     "@storybook/vue": "^5.0.6",
     "babel-loader": "^8.0.5",
     "babel-preset-vue": "^2.0.2",
