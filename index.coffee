@@ -64,8 +64,7 @@ export default
 			then @addInViewportHandlers()
 			else @removeInViewportHandlers()
 
-		# If the offsets change, need to rebuild scrollMonitor instance because it
-		# doesn't offer an API to update the offset
+		# If the offsets change, need to re-init the observer
 		inViewportOffsetComputed:
 			deep: true
 			handler: ->
@@ -80,22 +79,19 @@ export default
 
 		# Add listeners
 		addInViewportHandlers: ->
-			return
+
 			# Don't add twice
 			return if @inViewport.listening
 			@inViewport.listening = true
 
-			# Create scrollMonitor instance which starts watching scroll
-			if @inViewportContainer
-				@scrollMonitor = (scrollMonitor.createContainer @inViewportContainer).create @$el, @inViewportOffsetComputed
-			else
-				@scrollMonitor = scrollMonitor.create @$el, @inViewportOffsetComputed
-
-			# Start listening for changes
-			@scrollMonitor.on 'stateChange', @updateInViewport
-
-			# Update intiial state, which also handles `once` prop
-			@updateInViewport()
+			# Create IntersectionObserver instance
+			@inViewportObserver = new IntersectionObserver @updateInViewport,
+				root: undefined
+				rootMargin: undefined
+				threshold: undefined
+			
+			# Add handler
+			@inViewportObserver.observe @$el
 
 		# Remove listeners
 		removeInViewportHandlers: ->
@@ -103,19 +99,21 @@ export default
 			# Don't remove twice
 			return unless @inViewport.listening
 			@inViewport.listening = false
-
+			
 			# Destroy instance, which also removes listeners
-			@scrollMonitor.destroy() if @scrollMonitor
-			delete @scrollMonitor
+			@inViewportObserver?.disconnect()
+			delete @inViewportObserver
 
-		# Handle state changes from scrollMonitor
-		updateInViewport: ->
+		# Handle state changes from scrollMonitor.  There should only ever be one
+		# entry
+		updateInViewport: ([entry]) ->
+			console.log entry
 
 			# Update state values
-			@inViewport.now   = @scrollMonitor.isInViewport
-			@inViewport.fully = @scrollMonitor.isFullyInViewport
-			@inViewport.above = @scrollMonitor.isAboveViewport
-			@inViewport.below = @scrollMonitor.isBelowViewport
+			@inViewport.now = entry.isIntersecting
+			@inViewport.fully = entry.intersectionRatio == 1
+			# @inViewport.above = @scrollMonitor.isAboveViewport
+			# @inViewport.below = @scrollMonitor.isBelowViewport
 
 			# If set to update "once", remove listeners if in viewport
 			@removeInViewportHandlers() if @inViewportOnce and @inViewport.now
