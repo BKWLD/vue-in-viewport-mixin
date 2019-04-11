@@ -1,8 +1,5 @@
-# Deps
-scrollMonitor = require 'scrollmonitor'
-
 # Mixin definition
-module.exports =
+export default
 
 	# Public interface
 	props:
@@ -17,7 +14,8 @@ module.exports =
 		inViewportOnce:
 			type: Boolean
 			default: false
-
+		
+		# Specify the container to use
 		inViewportContainer:
 			type: String
 			default: null
