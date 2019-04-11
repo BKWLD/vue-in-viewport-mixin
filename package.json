@@ -34,6 +34,7 @@
     "@storybook/vue": "^5.0.6",
     "babel-loader": "^8.0.5",
     "babel-preset-vue": "^2.0.2",
+    "coffee-loader": "^0.9.0",
     "coffeescript": "^2.4.1",
     "cypress": "^3.2.0",
     "vue": "^2.6.10",

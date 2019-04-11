@@ -80,7 +80,7 @@ export default
 
 		# Add listeners
 		addInViewportHandlers: ->
-
+			return
 			# Don't add twice
 			return if @inViewport.listening
 			@inViewport.listening = true
