@@ -1,36 +1,103 @@
-import { storiesOf } from '@storybook/vue';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import { storiesOf, addDecorator } from '@storybook/vue'
+import _ from 'lodash'
+import { 
+  withKnobs, 
+  number, 
+  text, 
+  boolean, 
+  object,
+} from '@storybook/addon-knobs'
 
+// Simple component to test with
 import Box from './Box'
 
-storiesOf('Examples', module)
-  .add('Basic', () => ({
-    components: { Box },
-    template: '<box @change="action"/>',
-    methods: { action: action('clicked') },
-  }));
+// Helper for default properties
 
-// import MyButton from './MyButton';
-// 
-// 
-// storiesOf('Button', module)
-//   .add('with text', () => ({
-//     components: { MyButton },
-//     template: '<my-button @click="action">Hello Button</my-button>',
-//     methods: { action: action('clicked') },
-//   }))
-//   .add('with JSX', () => ({
-//     components: { MyButton },
-//     // eslint-disable-next-line no-unused-vars
-//     render(h) {
-//       return <my-button onClick={this.action}>With JSX</my-button>;
-//     },
-//     methods: { action: linkTo('clicked') },
-//   }))
-//   .add('with some emoji', () => ({
-//     components: { MyButton },
-//     template: '<my-button @click="action">😀 😎 👍 💯</my-button>',
-//     methods: { action: action('clicked') },
-//   }));
-// 
+// Shared props
+const props = ({
+  marginTop = '100vh',
+  marginBottom = '100vh',
+  inViewportActive = true,
+  inViewportOnce = false,
+  inViewportRootMargin = undefined,
+  inViewportRoot = undefined,
+  inViewportThreshold = [0,1],
+}) => { return {
+  marginTop: { default: text('CSS margin-top', marginTop) },
+  marginBottom: { default: text('CSS margin-bottom', marginBottom) },
+  
+  inViewportActive: { default: boolean('inViewportActive', inViewportActive) },
+  inViewportOnce: { default: boolean('inViewportOnce', inViewportOnce) },
+  
+  inViewportRootMargin: { default: text('inViewportRootMargin', inViewportRootMargin) },
+  inViewportRoot: { default: text('inViewportRoot', inViewportRoot) },
+  inViewportThreshold: { default: object('inViewportThreshold', inViewportThreshold) },
+}}
+
+// Create a bucket of stories
+addDecorator(withKnobs)
+storiesOf('Examples', module)
+  
+  .add('Initially visible', () => ({
+    components: { Box },
+    props: props({ marginTop: '0vh' }),
+    template: `<div>
+      <box 
+        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
+        :inViewportActive='inViewportActive'
+        :inViewportOnce='inViewportOnce'
+        :inViewportRootMargin='inViewportRootMargin'
+        :inViewportRoot='inViewportRoot'
+        :inViewportThreshold='inViewportThreshold'
+      />
+      </div>`,
+  }))
+  
+  .add('Scroll to reveal', () => ({
+    components: { Box },
+    props: props({}),
+    template: `<div>
+      <p>👇👇👇👇👇👇👇👇👇</p>
+      <box 
+        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
+        :inViewportActive='inViewportActive'
+        :inViewportOnce='inViewportOnce'
+        :inViewportRootMargin='inViewportRootMargin'
+        :inViewportRoot='inViewportRoot'
+        :inViewportThreshold='inViewportThreshold'
+      />
+      </div>`,
+  }))
+  
+  .add('Trigger once', () => ({
+    components: { Box },
+    props: props({ inViewportOnce: true }),
+    template: `<div>
+      <p>👇👇👇👇👇👇👇👇👇</p>
+      <box 
+        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
+        :inViewportActive='inViewportActive'
+        :inViewportOnce='inViewportOnce'
+        :inViewportRootMargin='inViewportRootMargin'
+        :inViewportRoot='inViewportRoot'
+        :inViewportThreshold='inViewportThreshold'
+      />
+      </div>`,
+  }))
+  
+  .add('Initially inactive', () => ({
+    components: { Box },
+    props: props({ inViewportActive: false }),
+    template: `<div>
+      <p>👇👇👇👇👇👇👇👇👇</p>
+      <box 
+        :style='{ marginTop: marginTop, marginBottom: marginBottom  }'
+        :inViewportActive='inViewportActive'
+        :inViewportOnce='inViewportOnce'
+        :inViewportRootMargin='inViewportRootMargin'
+        :inViewportRoot='inViewportRoot'
+        :inViewportThreshold='inViewportThreshold'
+      />
+      </div>`,
+  }))
+

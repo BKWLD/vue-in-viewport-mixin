@@ -28,8 +28,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
-    "@storybook/addon-actions": "^5.0.6",
-    "@storybook/addon-links": "^5.0.6",
+    "@storybook/addon-knobs": "^5.0.6",
     "@storybook/addons": "^5.0.6",
     "@storybook/vue": "^5.0.6",
     "babel-loader": "^8.0.5",

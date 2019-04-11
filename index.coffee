@@ -15,22 +15,23 @@ export default
 			type: Boolean
 			default: false
 		
-		# Specify the container to use
-		inViewportContainer:
+		# The IntersectionObserver root margin adds offsets to when the now and 
+		# fully get updated
+		inViewportRootMargin: 
+			type: Number|String
+			default: undefined
+			
+		# Specify the IntersectionObserver root to use.
+		inViewportRoot:
 			type: String
-			default: null
+			default: undefined
 
-		# Shared offsets
-		inViewportOffset:
-			type: Number
-			default: 0
-		inViewportOffsetTop:
-			type: Number
-			default: null
-		inViewportOffsetBottom:
-			type: Number
-			default: null
-
+		# The IntersectionObserver threshold defines the intersection ratios that
+		# fire the observer callback
+		inViewportThreshold: 
+			type: Number|Array
+			default: -> [0,1] # Fire on enter/leave and fully enter/leave
+		
 	# Bindings that are used by the host component
 	data: -> inViewport:
 
@@ -42,14 +43,6 @@ export default
 
 		# Internal props
 		listening: false
-
-	# Use general offset if none are defined
-	computed:
-		inViewportOffsetTopComputed: -> @inViewportOffsetTop ? @inViewportOffset
-		inViewportOffsetBottomComputed: -> @inViewportOffsetBottom ? @inViewportOffset
-		inViewportOffsetComputed: ->
-			top: @inViewportOffsetTopComputed
-			bottom: @inViewportOffsetBottomComputed
 
 	# Lifecycle hooks
 	mounted: -> @$nextTick(@inViewportInit)
@@ -86,9 +79,9 @@ export default
 
 			# Create IntersectionObserver instance
 			@inViewportObserver = new IntersectionObserver @updateInViewport,
-				root: undefined
-				rootMargin: undefined
-				threshold: undefined
+				root: document.querySelector @inViewportRoot if @inViewportRoot
+				rootMargin: @inViewportRootMargin
+				threshold: @inViewportThreshold
 			
 			# Add handler
 			@inViewportObserver.observe @$el

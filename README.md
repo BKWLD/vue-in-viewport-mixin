@@ -1,10 +1,13 @@
 # Vue In Viewport Mixin
 
-Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values.  You can then use those data values to do things like trigger transitions.
+Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values using the [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver).  You can then use those data values to do things like trigger transitions.
 
 You may want to check out the directive vesion of this package: [vue-in-viewport-directive](https://github.com/BKWLD/vue-in-viewport-directive).
 
-It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make registering event listeners light and to do the in viewport calculations.
+# Install
+
+This package depends on the [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) API which needs a polyfill for old browsers, including all of IE.  Consider using the [W3C IntersectionObserver polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
+
 
 ## Usage
 
@@ -24,7 +27,7 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 * Use the optional offset props to configure the component:
 	```html
 	<large-copy
-		:in-viewport-offset-top='-100'
+		:in-viewport-root-margin='-5% 0'
 		:in-viewport-once='true'>
 	</large-copy>
 	```
@@ -33,7 +36,7 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 	```html
 	<div class='.large-copy'>
 		<transition name='fade'>
-			<h1 v-if='inViewport.now'>{{ copy.title }}</h1>
+			<h1 v-show='inViewport.now'>{{ copy.title }}</h1>
 		</transition>
 	</div>
 	```
@@ -42,9 +45,9 @@ It wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make regis
 
 - `in-viewport-active (true)` - Whether to listen update the mixin data.  Setting to `false` later in the lifecyle will remove listeners and setting back to `true` will re-apply listeners.
 - `in-viewport-once (false)` - Whether to remove listeners once the component enters viewport.  If the component is in viewport when mounted, listeners are never added.
-- `in-viewport-offset (0)` - Sets both `in-viewport-offset-top` and `in-viewport-offset-bottom`
-- `in-viewport-offset-top` - A positive number will make the vm trigger being in the viewport early, before it's actually scrolls into position.  A negative value will do the opposite.
-- `in-viewport-offset-bottom` - See `in-viewport-offset-top`.
+- `in-viewport-root-margin` - Specify the [IntersectionObserver rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  For example, set to "-5% 0" to delay the `inViewport.now` from switching state until your component is 5% of the viewport height into the page.
+- `in-viewport-root` - Specify the [IntersectionObserver root](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  Defaults to the browser viewport.
+- `in-viewport-threshold ([0,1])` - Specify the [IntersectionObserver threshold](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  The defaults should work for most cases.
 
 ## Data
 
@@ -60,8 +63,3 @@ data: {
 	}
 }
 ```
-
-## Contributing
-
-- Run the examples server with `PORT=3000 node examples/server` and go to an example to see the source for the E2E tests.  Like http://localhost:3000/basic/.
-- Run `yarn test` to run E2E tests.
