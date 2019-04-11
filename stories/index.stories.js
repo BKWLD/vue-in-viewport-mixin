@@ -51,11 +51,11 @@ const box = `
         marginBottom: marginBottom,
         height: height,
       }'
-      :inViewportActive='inViewportActive'
-      :inViewportOnce='inViewportOnce'
-      :inViewportRootMargin='inViewportRootMargin'
-      :inViewportRoot='inViewportRoot'
-      :inViewportThreshold='inViewportThreshold'
+      :in-viewport-active='inViewportActive'
+      :in-viewport-once='inViewportOnce'
+      :in-viewport-rootMargin='inViewportRootMargin'
+      :in-viewport-root='inViewportRoot'
+      :in-viewport-threshold='inViewportThreshold'
     />
   </div>`
 
