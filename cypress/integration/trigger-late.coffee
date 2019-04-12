@@ -1,39 +1,39 @@
-context 'Initially visible story', ->
+context 'Trigger late story', ->
 
 	beforeEach -> 
 		cy.viewport 800, 800
-		cy.visit '?path=/story/examples--initially-visible'
+		cy.visit '?path=/story/examples--trigger-late-px'
 		cy.wait 1500 # Wait for iframe to load
 
-	it 'is initially visible', -> 
+	it 'is initially hidden', -> 
+		cy.checkState 
+			now:   false
+			fully: false
+			above: false
+			below: true
+	
+	it 'is not visible after 1px of scroll', -> 
+		cy.scroll 1
+		cy.checkState 
+			now:   false
+			fully: false
+			above: false
+			below: true
+	
+	it 'becomes visible after 20px of scroll', -> 
+		cy.scroll 20
+		cy.checkState 
+			now:   true
+			fully: false
+			above: false
+			below: true
+	
+	it 'becomes fully visible after 220px of scroll', -> 
+		cy.scroll 220
 		cy.checkState 
 			now:   true
 			fully: true
 			above: false
-			below: false
-	
-	it 'is not fully visible after 1px of scroll', -> 
-		cy.scroll 1
-		cy.checkState 
-			now:   true
-			fully: false
-			above: true
-			below: false
-	
-	it 'is still not fully visible after 10px of scroll', -> 
-		cy.scroll 10
-		cy.checkState 
-			now:   true
-			fully: false
-			above: true
-			below: false
-	
-	it 'is hidden after scrolling the box height (200px)', -> 
-		cy.scroll 200
-		cy.checkState 
-			now:   false
-			fully: false
-			above: true
 			below: false
 		
 # Helper to check boolean-ish values

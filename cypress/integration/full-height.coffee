@@ -1,8 +1,8 @@
-context 'Scroll to reveal story', ->
+context 'Full height story', ->
 
 	beforeEach -> 
 		cy.viewport 800, 800
-		cy.visit '?path=/story/examples--scroll-to-reveal'
+		cy.visit '?path=/story/examples--full-height'
 		cy.wait 1500 # Wait for iframe to load
 
 	it 'is initially hidden', -> 
@@ -20,37 +20,38 @@ context 'Scroll to reveal story', ->
 			above: false
 			below: true
 	
-	it 'is fully visible after scrolling the box height (200px)', -> 
-		cy.scroll 200
-		cy.checkState 
-			now:   true
-			fully: true
-			above: false
-			below: false
-	
-	it 'is still fully visible after scrolling 100vh', -> 
+	it 'is fully visible after scrolling 100vh', -> 
 		cy.getHeight (height) ->
 			cy.scroll height
 			cy.checkState 
 				now:   true
 				fully: true
 				above: false
-				below: false
+				below: true
 	
-	it 'is still no longer fully visible after 1 more px of scroll', -> 
+	it 'is also above after another px of scroll', -> 
 		cy.getHeight (height) ->
 			cy.scroll height + 1
 			cy.checkState 
 				now:   true
-				fully: false
+				fully: true
 				above: true
-				below: false
+				below: true
 	
-	it 'is fully hidden after scrolling 100vh plus box height', -> 
+	it 'continues to be fully in viewport after another 200px of scroll', -> 
 		cy.getHeight (height) ->
 			cy.scroll height + 200
 			cy.checkState 
-				now:   false
+				now:   true
+				fully: true
+				above: true
+				below: false
+	
+	it 'is no longer fully in viewport after another 1px of scoll', -> 
+		cy.getHeight (height) ->
+			cy.scroll height + 201
+			cy.checkState 
+				now:   true
 				fully: false
 				above: true
 				below: false

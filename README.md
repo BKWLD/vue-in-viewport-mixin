@@ -49,7 +49,7 @@ This package depends on the [IntersectionObserver](https://developer.mozilla.org
 
 - `in-viewport-once (false)` - Whether to remove listeners once the component enters viewport.  If the component is in viewport when mounted, listeners are never added.
 
-- `in-viewport-root-margin (-1px 0px)` - Specify the [IntersectionObserver rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  For example, set to "-20% 0%" to delay the `inViewport.now` from switching state until your component is 20% of the viewport height into the page. This defaults to `-1px 0px 0px 0px` so that it is considered above the viewport when scrolled a target's height worth up.
+- `in-viewport-root-margin (0px 0px -1px 0px)` - Specify the [IntersectionObserver rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  For example, set to "-20% 0%" to delay the `inViewport.now` from switching state until your component is 20% of the viewport height into the page. This defaults to `0px 0px -1px 0px` so that a target that is positioned at `100vh` registers as not in viewport.
 
 - `in-viewport-root` - Specify the [IntersectionObserver root](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  Defaults to the browser viewport.
 
@@ -69,3 +69,7 @@ data: {
 	}
 }
 ```
+
+## Tests
+
+Cypress-based E2E tests were written for this package but aren't hooked up to Travis CI because they fail when run through the Electron browser.  I suspect this is related to how I've had to workaround Cypress' lack of iframe support.  The tests work when run via `yarn cypress open` and `yarn storybook`.

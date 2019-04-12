@@ -115,7 +115,7 @@ storiesOf('Examples', module)
   
   .add('Full height', () => ({
     components: { Box },
-    props: props({ height: '120vh' }),
+    props: props({ height: 'calc(100vh + 200px)' }),
     template: initiallyHiddenBox,
   }))
 

@@ -16,10 +16,10 @@ export default
 			default: false
 		
 		# The IntersectionObserver root margin adds offsets to when the now and 
-		# fully get updated
+		# fully get updated.
 		inViewportRootMargin: 
 			type: Number|String
-			default: undefined
+			default: '0px 0px -1px 0px'
 			
 		# Specify the IntersectionObserver root to use.
 		inViewportRoot:
@@ -134,18 +134,17 @@ export default
 			}]) ->
 		
 			# Get the maximum threshold ratio, which is less than 1 when the
-			# element is taller than the viewport.  We're reducing the threshold
-			# slightly because otherwise some browsers (like IE with polyfill) never
-			# reached the threshold when their target was taller than the viewport. I
-			# suspect it's a rounding issue.
-			@inViewport.maxThreshold = Math.min 1, root.height / target.height * .999
-			console.log target, root
+			# element is taller than the viewport.
+			@inViewport.maxThreshold = Math.min 1, root.height / target.height
 			
-			# If intersecting, some of the target is within the root rect.
-			@inViewport.now = (target.top >= root.top and target.top <= root.bottom) or
-			(target.bottom > root.top and target.bottom < root.bottom)
+			# Check if some part of the target is in the root box.  The isIntersecting
+			# property from the IntersectionObserver was not used because it reports
+			# the case where a box is immediately offscreen as intersecting, even
+			# though no aprt of it is visible.
+			@inViewport.now = target.top <= root.bottom and target.bottom > root.top
 
-			# Calculate above and below
+			# Calculate above and below.  The +1 on the bottom check co-incides with
+			# the default root-margin which has a -1 on the bottom margin.
 			@inViewport.above = target.top < root.top
 			@inViewport.below = target.bottom > root.bottom + 1
 			

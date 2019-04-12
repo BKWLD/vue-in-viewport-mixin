@@ -1,2 +1,0 @@
-env:
-  CYPRESS_baseUrl: https://bkwld.github.io/vue-in-viewport-mixin/

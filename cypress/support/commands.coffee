@@ -14,3 +14,10 @@ Cypress.Commands.add 'scroll', (y) ->
 			event: 'scroll'
 			amount: y
 		, '*'
+
+# Get the height of the preview iframe
+Cypress.Commands.add 'getHeight', (callback) ->
+	cy.get('#storybook-preview-iframe').then (iframe) ->
+		height = iframe.height()
+		cy.log "100vh == #{height}px"
+		callback height
