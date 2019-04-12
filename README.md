@@ -1,4 +1,4 @@
-# Vue In Viewport Mixin
+# Vue In Viewport Mixin [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg?branch=master)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
 
 Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values using the [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver).  You can then use those data values to do things like trigger transitions.
 
@@ -72,4 +72,7 @@ data: {
 
 ## Tests
 
-Cypress-based E2E tests were written for this package but aren't hooked up to Travis CI because they fail when run through the Electron browser.  I suspect this is related to how I've had to workaround Cypress' lack of iframe support.  The tests work when run via `yarn cypress open` and `yarn storybook`.
+1. Start Storybook: `yarn storybook`
+2. Open Cypress: `yarn cypress open`
+
+The Travis tests that run on deploy run against [the demo site](https://bkwld.github.io/vue-in-viewport-mixin) which gets updated as part of the `npm version` commands.
