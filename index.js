@@ -33,10 +33,10 @@ var _default2 = {
       default: false
     },
     // The IntersectionObserver root margin adds offsets to when the now and 
-    // fully get updated
+    // fully get updated.
     inViewportRootMargin: {
       type: Number | String,
-      default: void 0
+      default: '0px 0px -1px 0px'
     },
     // Specify the IntersectionObserver root to use.
     inViewportRoot: {
@@ -180,23 +180,29 @@ var _default2 = {
 
       return delete this.inViewportObserver;
     },
-    // Handle state changes from scrollMonitor.  There should only ever be one
-    // entry
+    // Handle state changes.  There should only ever be one entry and we're
+    // destructuring the properties we care about since they have long names.
     updateInViewport: function updateInViewport(_ref) {
       var _ref2 = _slicedToArray(_ref, 1),
-          entry = _ref2[0];
+          _ref2$ = _ref2[0],
+          target = _ref2$.boundingClientRect,
+          root = _ref2$.rootBounds;
 
       // Get the maximum threshold ratio, which is less than 1 when the
-      // element is taller than the viewport
-      this.inViewport.maxThreshold = Math.min(1, entry.rootBounds.height / entry.boundingClientRect.height); // Update state values. It was necessary to include "or equal to" here
-      // because the threshold trigger fires when the sites may equal each other.
-      // Without this, the appeared stuck when the two tops (for instance) were
-      // exactly equal.
+      // element is taller than the viewport.
+      this.inViewport.maxThreshold = Math.min(1, root.height / target.height); // Check if some part of the target is in the root box.  The isIntersecting
+      // property from the IntersectionObserver was not used because it reports
+      // the case where a box is immediately offscreen as intersecting, even
+      // though no aprt of it is visible.
 
-      this.inViewport.now = entry.isIntersecting;
-      this.inViewport.fully = entry.intersectionRatio >= this.inViewport.maxThreshold;
-      this.inViewport.above = entry.boundingClientRect.top <= entry.rootBounds.top;
-      this.inViewport.below = entry.boundingClientRect.bottom >= entry.rootBounds.bottom;
+      this.inViewport.now = target.top <= root.bottom && target.bottom > root.top; // Calculate above and below.  The +1 on the bottom check co-incides with
+      // the default root-margin which has a -1 on the bottom margin.
+
+      this.inViewport.above = target.top < root.top;
+      this.inViewport.below = target.bottom > root.bottom + 1; // Determine whether fully in viewport. The rules are different based on
+      // whether the target is taller than the viewport.
+
+      this.inViewport.fully = target.height > root.height ? target.top <= root.top && target.bottom >= root.bottom + 1 : !this.inViewport.above && !this.inViewport.below;
 
       if (this.inViewportOnce && this.inViewport.now) {
         // If set to update "once", remove listeners if in viewport
