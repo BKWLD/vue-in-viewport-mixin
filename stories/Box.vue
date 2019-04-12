@@ -6,10 +6,18 @@ An example box that uses the in-viewport-mixin
 
 <div class="box">
 	<ul class="status">
-		<li>inViewport.now: <b>{{ inViewport.now ? 'Yes' : 'No' }}</b></li>
-		<li>inViewport.fully: <b>{{ inViewport.fully ? 'Yes' : 'No' }}</b></li>
-		<li>inViewport.above: <b>{{ inViewport.above ? 'Yes' : 'No' }}</b></li>
-		<li>inViewport.below: <b>{{ inViewport.below ? 'Yes' : 'No' }}</b></li>
+		<li>inViewport.now: 
+			<b data-cy='now'>{{ inViewport.now ? 'Yes' : 'No' }}</b>
+		</li>
+		<li>inViewport.fully: 
+			<b data-cy='fully'>{{ inViewport.fully ? 'Yes' : 'No' }}</b>
+		</li>
+		<li>inViewport.above: 
+			<b data-cy='above'>{{ inViewport.above ? 'Yes' : 'No' }}</b>
+		</li>
+		<li>inViewport.below: 
+			<b data-cy='below'>{{ inViewport.below ? 'Yes' : 'No' }}</b>
+		</li>
 	</ul>
 </div>
 
@@ -20,7 +28,18 @@ An example box that uses the in-viewport-mixin
 <script>
 import inViewport from '../index.coffee'
 export default {
-	mixins: [inViewport]
+	mixins: [inViewport],
+	
+	// Listen for Cypress scroll postMessage events and scroll the page
+	mounted: function() {
+		window.addEventListener('message', function({ data }) {
+			console.log(data.event, data.amount);
+			if (data && data.event && data.event == 'scroll') {
+				console.log(document.querySelector('.viewport'));
+				document.querySelector('.viewport').scroll(0, data.amount)
+			}
+		})
+	}
 }
 </script>
 

@@ -15,8 +15,8 @@ import Box from './Box'
 
 // Shared props
 const props = ({
-  marginTop = 'calc(100vh + 1px)',
-  marginBottom = 'calc(100vh + 1px)',
+  marginTop = '100vh',
+  marginBottom = '100vh',
   height = '',
   inViewportActive = true,
   inViewportOnce = false,

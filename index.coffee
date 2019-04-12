@@ -155,7 +155,7 @@ export default
 			# It was necessary to include "or equal to" here  because the threshold 
 			# trigger fires when the sites may equal each other. Without this, the 
 			# appeared stuck when the two tops (for instance) were exactly equal.
-			@inViewport.above = target.top <= root.top
+			@inViewport.above = target.top < root.top
 			@inViewport.below = target.bottom >= root.bottom
 						
 			# If set to update "once", remove listeners if in viewport
