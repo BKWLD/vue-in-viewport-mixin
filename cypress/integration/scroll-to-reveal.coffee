@@ -2,38 +2,30 @@ context 'Initially visible', ->
 
 	beforeEach -> 
 		cy.viewport 800, 800
-		cy.visit '?path=/story/examples--initially-visible'
+		cy.visit '?path=/story/examples--scroll-to-reveal'
 		cy.wait 1500 # Wait for iframe to load
 
-	it 'is initially visible', -> 
+	it 'is initially hidden', -> 
 		cy.checkState 
-			now:   true
-			fully: true
+			now:   false
+			fully: false
 			above: false
-			below: false
+			below: true
 	
-	it 'it is not fully visible after 1px of scroll', -> 
+	it 'it is visible after 1px of scroll', -> 
 		cy.scroll 1
 		cy.checkState 
 			now:   true
 			fully: false
-			above: true
-			below: false
+			above: false
+			below: true
 	
-	it 'it is still not fully visible after 10px of scroll', -> 
-		cy.scroll 10
-		cy.checkState 
-			now:   true
-			fully: false
-			above: true
-			below: false
-	
-	it 'it is hidden after scrolling the box height (200px)', -> 
+	it 'it is fully visible after scrolling the box height (200px)', -> 
 		cy.scroll 200
 		cy.checkState 
-			now:   false
-			fully: false
-			above: true
+			now:   true
+			fully: true
+			above: false
 			below: false
 		
 # Helper to check boolean-ish values

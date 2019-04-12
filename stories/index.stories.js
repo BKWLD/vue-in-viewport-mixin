@@ -20,7 +20,7 @@ const props = ({
   height = '',
   inViewportActive = true,
   inViewportOnce = false,
-  inViewportRootMargin = undefined,
+  inViewportRootMargin = '0px 0px -1px 0px',
   inViewportThreshold = [0, 1],
 }) => { return {
   marginTop: { default: text('CSS margin-top', marginTop) },
@@ -95,7 +95,13 @@ storiesOf('Examples', module)
     template: initiallyHiddenBox,
   }))
   
-  .add('Trigger late', () => ({
+  .add('Trigger late (px)', () => ({
+    components: { Box },
+    props: props({ inViewportRootMargin: '-20px 0px' }),
+    template: initiallyHiddenBox,
+  }))
+  
+  .add('Trigger late (%)', () => ({
     components: { Box },
     props: props({ inViewportRootMargin: '-20% 0%' }),
     template: initiallyHiddenBox,

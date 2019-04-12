@@ -33,9 +33,7 @@ export default {
 	// Listen for Cypress scroll postMessage events and scroll the page
 	mounted: function() {
 		window.addEventListener('message', function({ data }) {
-			console.log(data.event, data.amount);
 			if (data && data.event && data.event == 'scroll') {
-				console.log(document.querySelector('.viewport'));
 				document.querySelector('.viewport').scroll(0, data.amount)
 			}
 		})

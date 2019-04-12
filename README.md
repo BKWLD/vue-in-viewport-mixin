@@ -46,9 +46,13 @@ This package depends on the [IntersectionObserver](https://developer.mozilla.org
 ## Props
 
 - `in-viewport-active (true)` - Whether to listen update the mixin data.  Setting to `false` later in the lifecyle will remove listeners and setting back to `true` will re-apply listeners.
+
 - `in-viewport-once (false)` - Whether to remove listeners once the component enters viewport.  If the component is in viewport when mounted, listeners are never added.
-- `in-viewport-root-margin` - Specify the [IntersectionObserver rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  For example, set to "-20% 0%" to delay the `inViewport.now` from switching state until your component is 20% of the viewport height into the page.
+
+- `in-viewport-root-margin (-1px 0px)` - Specify the [IntersectionObserver rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  For example, set to "-20% 0%" to delay the `inViewport.now` from switching state until your component is 20% of the viewport height into the page. This defaults to `-1px 0px 0px 0px` so that it is considered above the viewport when scrolled a target's height worth up.
+
 - `in-viewport-root` - Specify the [IntersectionObserver root](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  Defaults to the browser viewport.
+
 - `in-viewport-threshold ([0,1])` - Specify the [IntersectionObserver threshold](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters).  The defaults should work for most cases.
 
 ## Data

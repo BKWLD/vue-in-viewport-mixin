@@ -130,9 +130,7 @@ export default
 		# destructuring the properties we care about since they have long names.
 		updateInViewport: ([{
 				boundingClientRect: target,
-				rootBounds: root,
-				isIntersecting,
-				intersectionRatio: ratio
+				rootBounds: root
 			}]) ->
 		
 			# Get the maximum threshold ratio, which is less than 1 when the
@@ -141,22 +139,21 @@ export default
 			# reached the threshold when their target was taller than the viewport. I
 			# suspect it's a rounding issue.
 			@inViewport.maxThreshold = Math.min 1, root.height / target.height * .999
-						
-			# If intersecting, some of the target is within the root rect
-			@inViewport.now = isIntersecting
+			console.log target, root
 			
-			# Rather than `ratio == @inViewport.maxThreshold`, I am treating a very
-			# small difference as in viewport as well.  This fixed issues I saw in
-			# Chrome that I think are related to the IntersectionObserver firing a
-			# little after a scroll event and so the intersectionRatio was 
-			# fractionally different than the maxThreshold.
-			@inViewport.fully = Math.abs(ratio - @inViewport.maxThreshold) < .001
-			
-			# It was necessary to include "or equal to" here  because the threshold 
-			# trigger fires when the sites may equal each other. Without this, the 
-			# appeared stuck when the two tops (for instance) were exactly equal.
+			# If intersecting, some of the target is within the root rect.
+			@inViewport.now = (target.top >= root.top and target.top <= root.bottom) or
+			(target.bottom > root.top and target.bottom < root.bottom)
+
+			# Calculate above and below
 			@inViewport.above = target.top < root.top
-			@inViewport.below = target.bottom >= root.bottom
+			@inViewport.below = target.bottom > root.bottom + 1
+			
+			# Determine whether fully in viewport. The rules are different based on
+			# whether the target is taller than the viewport.
+			@inViewport.fully = if target.height > root.height
+			then target.top <= root.top and target.bottom >= root.bottom + 1
+			else not @inViewport.above and not @inViewport.below
 						
 			# If set to update "once", remove listeners if in viewport
 			@removeInViewportHandlers() if @inViewportOnce and @inViewport.now
