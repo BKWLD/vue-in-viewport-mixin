@@ -75,10 +75,14 @@ export default
 			then @addInViewportHandlers()
 			else @removeInViewportHandlers()
 
-		# If any of the Observer options change, re-init
+		# If any of the Observer options change, re-init.
 		inViewportRootMargin: -> @reInitInViewportMixin()
 		inViewportRoot: -> @reInitInViewportMixin()
-		inViewportThresholdWithMax: -> @reInitInViewportMixin()
+		inViewportThresholdWithMax: (now, old) -> 
+			
+			# In IE, this is kept getting retriggered, to doing a manual comparison
+			# of old and new before deciding whether to take action.
+			@reInitInViewportMixin() unless now.toString() == old.toString()
 
 	# Public API
 	methods:
