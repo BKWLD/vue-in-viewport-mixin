@@ -32,7 +32,6 @@ const props = ({
   
   inViewportRootMargin: { default: text('inViewportRootMargin', inViewportRootMargin) },
   inViewportThreshold: { default: object('inViewportThreshold', inViewportThreshold) },
-  inViewportRoot: { default: '.viewport' },
 }}
 
 // Shared box template.  I had to make an artifical viewport box because
@@ -55,8 +54,8 @@ const box = `
       }'
       :in-viewport-active='inViewportActive'
       :in-viewport-once='inViewportOnce'
-      :in-viewport-rootMargin='inViewportRootMargin'
-      :in-viewport-root='inViewportRoot'
+      :in-viewport-root-margin='inViewportRootMargin'
+      in-viewport-root='.viewport'
       :in-viewport-threshold='inViewportThreshold'
     />
   </div>`
