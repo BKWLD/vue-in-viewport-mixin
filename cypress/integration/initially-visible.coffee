@@ -1,9 +1,9 @@
+{ viewportH, boxH } = require '../support/vars'
 context 'Initially visible story', ->
 
 	beforeEach -> 
 		cy.viewport 800, 800
-		cy.visit '?path=/story/examples--initially-visible'
-		cy.wait 1500 # Wait for iframe to load
+		cy.visit 'iframe.html?id=examples--initially-visible'
 
 	it 'is initially visible', -> 
 		cy.checkState 
@@ -29,7 +29,7 @@ context 'Initially visible story', ->
 			below: false
 	
 	it 'is hidden after scrolling the box height (200px)', -> 
-		cy.scroll 200
+		cy.scroll boxH
 		cy.checkState 
 			now:   false
 			fully: false

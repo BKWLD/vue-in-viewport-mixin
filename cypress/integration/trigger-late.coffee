@@ -1,9 +1,9 @@
+{ viewportH, boxH } = require '../support/vars'
 context 'Trigger late story', ->
 
 	beforeEach -> 
-		cy.viewport 800, 800
-		cy.visit '?path=/story/examples--trigger-late-px'
-		cy.wait 1500 # Wait for iframe to load
+		cy.viewport 800, viewportH
+		cy.visit 'iframe.html?id=examples--trigger-late-px'
 
 	it 'is initially hidden', -> 
 		cy.checkState 
@@ -29,7 +29,7 @@ context 'Trigger late story', ->
 			below: true
 	
 	it 'becomes fully visible after 220px of scroll', -> 
-		cy.scroll 220
+		cy.scroll boxH + 20
 		cy.checkState 
 			now:   true
 			fully: true

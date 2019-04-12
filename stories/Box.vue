@@ -28,16 +28,7 @@ An example box that uses the in-viewport-mixin
 <script>
 import inViewport from '../index.coffee'
 export default {
-	mixins: [inViewport],
-	
-	// Listen for Cypress scroll postMessage events and scroll the page
-	mounted: function() {
-		window.addEventListener('message', function({ data }) {
-			if (data && data.event && data.event == 'scroll') {
-				document.querySelector('.viewport').scroll(0, data.amount)
-			}
-		})
-	}
+	mixins: [inViewport]
 }
 </script>
 

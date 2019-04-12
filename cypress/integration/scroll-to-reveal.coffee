@@ -1,9 +1,9 @@
+{ viewportH, boxH } = require '../support/vars'
 context 'Scroll to reveal story', ->
 
 	beforeEach -> 
-		cy.viewport 800, 800
-		cy.visit '?path=/story/examples--scroll-to-reveal'
-		cy.wait 1500 # Wait for iframe to load
+		cy.viewport 800, viewportH
+		cy.visit 'iframe.html?id=examples--scroll-to-reveal'
 
 	it 'is initially hidden', -> 
 		cy.checkState 
@@ -21,7 +21,7 @@ context 'Scroll to reveal story', ->
 			below: true
 	
 	it 'is fully visible after scrolling the box height (200px)', -> 
-		cy.scroll 200
+		cy.scroll boxH
 		cy.checkState 
 			now:   true
 			fully: true
@@ -29,31 +29,28 @@ context 'Scroll to reveal story', ->
 			below: false
 	
 	it 'is still fully visible after scrolling 100vh', -> 
-		cy.getHeight (height) ->
-			cy.scroll height
-			cy.checkState 
-				now:   true
-				fully: true
-				above: false
-				below: false
+		cy.scroll viewportH
+		cy.checkState 
+			now:   true
+			fully: true
+			above: false
+			below: false
 	
 	it 'is still no longer fully visible after 1 more px of scroll', -> 
-		cy.getHeight (height) ->
-			cy.scroll height + 1
-			cy.checkState 
-				now:   true
-				fully: false
-				above: true
-				below: false
+		cy.scroll viewportH + 1
+		cy.checkState 
+			now:   true
+			fully: false
+			above: true
+			below: false
 	
 	it 'is fully hidden after scrolling 100vh plus box height', -> 
-		cy.getHeight (height) ->
-			cy.scroll height + 200
-			cy.checkState 
-				now:   false
-				fully: false
-				above: true
-				below: false
+		cy.scroll viewportH + boxH
+		cy.checkState 
+			now:   false
+			fully: false
+			above: true
+			below: false
 		
 # Helper to check boolean-ish values
 checkState = (state) ->
