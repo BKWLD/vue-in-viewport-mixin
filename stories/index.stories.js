@@ -1,3 +1,4 @@
+// Storybook deps
 import { storiesOf, addDecorator } from '@storybook/vue'
 import _ from 'lodash'
 import { 
@@ -9,6 +10,7 @@ import {
 } from '@storybook/addon-knobs'
 
 // Simple component to test with
+import 'intersection-observer' // For IE
 import Box from './Box'
 
 // Shared props
