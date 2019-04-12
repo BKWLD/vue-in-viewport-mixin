@@ -4,6 +4,8 @@ Vue 2 mixin to determine when a DOM element is visible in the client window by u
 
 You may want to check out the directive vesion of this package: [vue-in-viewport-directive](https://github.com/BKWLD/vue-in-viewport-directive).
 
+Demo: https://bkwld.github.io/vue-in-viewport-mixin
+
 # Install
 
 This package depends on the [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) API which needs a polyfill for old browsers, including all of IE.  Consider using the [W3C IntersectionObserver polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
