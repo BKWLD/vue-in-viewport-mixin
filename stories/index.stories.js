@@ -1,6 +1,5 @@
 // Storybook deps
 import { storiesOf, addDecorator } from '@storybook/vue'
-import _ from 'lodash'
 import { 
   withKnobs, 
   number, 

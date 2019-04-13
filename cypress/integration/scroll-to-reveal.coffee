@@ -51,14 +51,3 @@ context 'Scroll to reveal story', ->
 			fully: false
 			above: true
 			below: false
-		
-# Helper to check boolean-ish values
-checkState = (state) ->
-	
-	# Find the component iframe
-	cy.get('#storybook-preview-iframe').then (iframe) ->
-		$doc = iframe.contents()
-		for key,val of state
-			cy.wrap $doc.find "[data-cy=#{key}]"
-			.should 'have.text', if val then 'Yes' else 'No'
-		return
