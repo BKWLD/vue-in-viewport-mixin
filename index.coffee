@@ -14,13 +14,13 @@ export default
 		inViewportOnce:
 			type: Boolean
 			default: false
-		
-		# The IntersectionObserver root margin adds offsets to when the now and 
+
+		# The IntersectionObserver root margin adds offsets to when the now and
 		# fully get updated.
-		inViewportRootMargin: 
+		inViewportRootMargin:
 			type: Number|String
 			default: '0px 0px -1px 0px'
-			
+
 		# Specify the IntersectionObserver root to use.
 		inViewportRoot:
 			type: String|Function|Object
@@ -28,10 +28,10 @@ export default
 
 		# The IntersectionObserver threshold defines the intersection ratios that
 		# fire the observer callback
-		inViewportThreshold: 
+		inViewportThreshold:
 			type: Number|Array
 			default: -> [0, 1] # Fire on enter/leave and fully enter/leave
-		
+
 	# Bindings that are used by the host component
 	data: -> inViewport:
 
@@ -50,17 +50,17 @@ export default
 	destroyed: -> @removeInViewportHandlers()
 
 	computed:
-		
+
 		# Add the maxThreshold to the @inViewportThreshold prop so that the handler
 		# is fired for elements that are talled than the viewport
 		inViewportThresholdWithMax: ->
-			
+
 			# Support number and array thresholds
-			threshold = 
+			threshold =
 				if typeof @inViewportThreshold == 'object'
 				then @inViewportThreshold
 				else [ @inViewportThreshold ]
-			
+
 			# Add only if not already in the threshold list
 			if @inViewport.maxThreshold in threshold
 			then threshold
@@ -78,8 +78,8 @@ export default
 		# If any of the Observer options change, re-init.
 		inViewportRootMargin: -> @reInitInViewportMixin()
 		inViewportRoot: -> @reInitInViewportMixin()
-		inViewportThresholdWithMax: (now, old) -> 
-			
+		inViewportThresholdWithMax: (now, old) ->
+
 			# In IE, this is kept getting retriggered, to doing a manual comparison
 			# of old and new before deciding whether to take action.
 			@reInitInViewportMixin() unless now.toString() == old.toString()
@@ -111,17 +111,17 @@ export default
 					else undefined
 				rootMargin: @inViewportRootMargin
 				threshold: @inViewportThresholdWithMax
-			
+
 			# Start listening
 			@inViewportObserver.observe @$el
-		
+
 		# Remove listeners
 		removeInViewportHandlers: ->
 
 			# Don't remove twice
 			return unless @inViewport.listening
 			@inViewport.listening = false
-			
+
 			# Destroy instance, which also removes listeners
 			@inViewportObserver?.disconnect()
 			delete @inViewportObserver
@@ -132,11 +132,11 @@ export default
 				boundingClientRect: target,
 				rootBounds: root
 			}]) ->
-		
+
 			# Get the maximum threshold ratio, which is less than 1 when the
 			# element is taller than the viewport.
 			@inViewport.maxThreshold = Math.min 1, root.height / target.height
-			
+
 			# Check if some part of the target is in the root box.  The isIntersecting
 			# property from the IntersectionObserver was not used because it reports
 			# the case where a box is immediately offscreen as intersecting, even
@@ -147,12 +147,12 @@ export default
 			# the default root-margin which has a -1 on the bottom margin.
 			@inViewport.above = target.top < root.top
 			@inViewport.below = target.bottom > root.bottom + 1
-			
+
 			# Determine whether fully in viewport. The rules are different based on
 			# whether the target is taller than the viewport.
 			@inViewport.fully = if target.height > root.height
 			then target.top <= root.top and target.bottom >= root.bottom + 1
 			else not @inViewport.above and not @inViewport.below
-						
+
 			# If set to update "once", remove listeners if in viewport
 			@removeInViewportHandlers() if @inViewportOnce and @inViewport.now
