@@ -128,7 +128,7 @@ export default
 
 		# Handle state changes.  There should only ever be one entry and we're
 		# destructuring the properties we care about since they have long names.
-		updateInViewport: ([{
+		updateInViewport: ([..., {
 				boundingClientRect: target,
 				rootBounds: root
 			}]) ->
