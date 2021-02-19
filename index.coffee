@@ -134,8 +134,10 @@ export default
 			}]) ->
 
 			# Get the maximum threshold ratio, which is less than 1 when the
-			# element is taller than the viewport.
-			@inViewport.maxThreshold = Math.min 1, root.height / target.height
+			# element is taller than the viewport. The height may be 0 when the
+			# parent element is hidden.
+			@inViewport.maxThreshold = if target.height > 0
+			then Math.min 1, root.height / target.height else 1
 
 			# Check if some part of the target is in the root box.  The isIntersecting
 			# property from the IntersectionObserver was not used because it reports

@@ -117,3 +117,13 @@ storiesOf('Examples', module)
 		props: props({ height: 'calc(100vh + 200px)' }),
 		template: initiallyHiddenBox,
 	}))
+
+storiesOf('Testing', module)
+
+	.add('Hidden Parent', () => ({
+		components: { Box },
+		props: props({ marginTop: '0vh' }),
+		template: `
+			<div style='display: none;'><box /></div>
+		`,
+	}))
