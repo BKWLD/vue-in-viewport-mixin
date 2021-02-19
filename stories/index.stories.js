@@ -38,7 +38,7 @@ const props = ({
 // without that, the viewport of the parent document was getting measured,
 // which was too tall
 // https://github.com/w3c/IntersectionObserver/issues/283
-const box = ```
+const box = `
 	<div class='viewport' style='
 		width: 100vw; height: 100vh;
 		top: 0; left: 0;
