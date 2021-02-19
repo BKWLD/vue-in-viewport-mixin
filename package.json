@@ -1,6 +1,6 @@
 {
   "name": "vue-in-viewport-mixin",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Vue 2 mixin to determine when a DOM element is visible in the client window",
   "main": "index.js",
   "scripts": {

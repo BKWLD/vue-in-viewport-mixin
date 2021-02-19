@@ -82,7 +82,7 @@ var _default2 = {
   },
   computed: {
     // Add the maxThreshold to the @inViewportThreshold prop so that the handler
-    // is fired for elements that are talled than the viewport
+    // is fired for elements that are taller than the viewport
     inViewportThresholdWithMax: function inViewportThresholdWithMax() {
       var ref, threshold; // Support number and array thresholds
 
@@ -114,7 +114,7 @@ var _default2 = {
     },
     inViewportThresholdWithMax: function inViewportThresholdWithMax(now, old) {
       if (now.toString() !== old.toString()) {
-        // In IE, this is kept getting retriggered, to doing a manual comparison
+        // In IE, this kept getting retriggered, so doing a manual comparison
         // of old and new before deciding whether to take action.
         return this.reInitInViewportMixin();
       }
@@ -194,8 +194,9 @@ var _default2 = {
       target = _slice$call2$.boundingClientRect;
       root = _slice$call2$.rootBounds;
       // Get the maximum threshold ratio, which is less than 1 when the
-      // element is taller than the viewport.
-      this.inViewport.maxThreshold = Math.min(1, root.height / target.height); // Check if some part of the target is in the root box.  The isIntersecting
+      // element is taller than the viewport. The height may be 0 when the
+      // parent element is hidden.
+      this.inViewport.maxThreshold = target.height > 0 ? Math.min(1, root.height / target.height) : 1; // Check if some part of the target is in the root box.  The isIntersecting
       // property from the IntersectionObserver was not used because it reports
       // the case where a box is immediately offscreen as intersecting, even
       // though no aprt of it is visible.
