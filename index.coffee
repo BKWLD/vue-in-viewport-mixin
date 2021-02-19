@@ -52,7 +52,7 @@ export default
 	computed:
 
 		# Add the maxThreshold to the @inViewportThreshold prop so that the handler
-		# is fired for elements that are talled than the viewport
+		# is fired for elements that are taller than the viewport
 		inViewportThresholdWithMax: ->
 
 			# Support number and array thresholds
@@ -80,7 +80,7 @@ export default
 		inViewportRoot: -> @reInitInViewportMixin()
 		inViewportThresholdWithMax: (now, old) ->
 
-			# In IE, this is kept getting retriggered, to doing a manual comparison
+			# In IE, this kept getting retriggered, so doing a manual comparison
 			# of old and new before deciding whether to take action.
 			@reInitInViewportMixin() unless now.toString() == old.toString()
 
