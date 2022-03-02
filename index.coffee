@@ -133,6 +133,10 @@ export default
 				rootBounds: root
 			}]) ->
 
+			if not target or not root
+				@removeInViewportHandlers()
+				return
+
 			# Get the maximum threshold ratio, which is less than 1 when the
 			# element is taller than the viewport. The height may be 0 when the
 			# parent element is hidden.
