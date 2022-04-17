@@ -43,7 +43,7 @@ This package depends on the [IntersectionObserver](https://developer.mozilla.org
 	</div>
 	```
 	
-* It's worth nothing that the IntersectionObserver counts an element as intersecting the viewport when it's top offset is equal to the height of height of the page.  For instance, if you have an element with `margin-top: 100vh`, that actually counts as intersecting and this mixin will have `inViewport.now == true`.
+* It's worth noting that the IntersectionObserver counts an element as intersecting the viewport when it's top offset is equal to the height of height of the page.  For instance, if you have an element with `margin-top: 100vh`, that actually counts as intersecting and this mixin will have `inViewport.now == true`.
 
 ## Props
 
