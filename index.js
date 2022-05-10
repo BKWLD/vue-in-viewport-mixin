@@ -193,9 +193,15 @@ var _default2 = {
       var _slice$call2$ = _slice$call2[0];
       target = _slice$call2$.boundingClientRect;
       root = _slice$call2$.rootBounds;
-      // Get the maximum threshold ratio, which is less than 1 when the
+
+      // Not sure wha causes this, but i've seen root missing
+      if (!(target && root)) {
+        return;
+      } // Get the maximum threshold ratio, which is less than 1 when the
       // element is taller than the viewport. The height may be 0 when the
       // parent element is hidden.
+
+
       this.inViewport.maxThreshold = target.height > 0 ? Math.min(1, root.height / target.height) : 1; // Check if some part of the target is in the root box.  The isIntersecting
       // property from the IntersectionObserver was not used because it reports
       // the case where a box is immediately offscreen as intersecting, even
