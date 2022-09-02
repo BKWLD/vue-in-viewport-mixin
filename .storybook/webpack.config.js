@@ -6,7 +6,10 @@ module.exports = function({ config, mode }) {
   // Add Coffeescript
   config.module.rules.push({
     test: /\.coffee$/,
-    loader: 'babel-loader!coffee-loader',
+    use: [
+      'babel-loader',
+      'coffee-loader'
+    ]
   })
   
   return config

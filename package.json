@@ -1,7 +1,7 @@
 {
   "name": "vue-in-viewport-mixin",
-  "version": "2.0.3",
-  "description": "Vue 2 mixin to determine when a DOM element is visible in the client window",
+  "version": "3.0.0",
+  "description": "Vue 3 mixin to determine when a DOM element is visible in the client window",
   "main": "index.js",
   "scripts": {
     "test": "cypress run",
@@ -23,24 +23,23 @@
   },
   "homepage": "https://github.com/BKWLD/vue-in-viewport-mixin#readme",
   "peerDependencies": {
-    "vue": "2.x"
+    "vue": "3.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@storybook/addon-knobs": "^5.0.6",
-    "@storybook/addons": "^5.0.6",
-    "@storybook/storybook-deployer": "^2.8.1",
-    "@storybook/vue": "^5.0.6",
-    "babel-loader": "^8.0.5",
-    "babel-preset-vue": "^2.0.2",
-    "coffee-loader": "^0.9.0",
-    "coffeescript": "^2.4.1",
+    "@babel/core": "^7.18.13",
+    "@storybook/addon-knobs": "^6.4.0",
+    "@storybook/addons": "^6.5.10",
+    "@storybook/builder-webpack5": "^6.5.10",
+    "@storybook/manager-webpack5": "^6.5.10",
+    "@storybook/storybook-deployer": "^2.8.12",
+    "@storybook/vue3": "^6.5.10",
+    "babel-loader": "^8.2.5",
+    "coffee-loader": "^4.0.0",
+    "coffeescript": "^2.7.0",
     "cypress": "^3.2.0",
-    "intersection-observer": "^0.5.1",
-    "vue": "^2.6.10",
-    "vue-loader": "^15.7.0",
-    "vue-template-compiler": "^2.6.10"
+    "intersection-observer": "^0.12.2",
+    "vue": "^3.2.38",
+    "vue-loader": "^17.0.0"
   },
   "dependencies": {}
 }

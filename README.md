@@ -1,6 +1,6 @@
 # Vue In Viewport Mixin
 
-Vue 2 mixin to determine when a DOM element is visible in the client window by updating Vue data values using the [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver).  You can then use those data values to do things like trigger transitions.
+Vue 3 mixin to determine when a DOM element is visible in the client window by updating Vue data values using the [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver).  You can then use those data values to do things like trigger transitions.
 
 You may want to check out the directive vesion of this package: [vue-in-viewport-directive](https://github.com/BKWLD/vue-in-viewport-directive).
 

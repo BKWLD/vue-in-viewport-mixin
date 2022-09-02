@@ -18,18 +18,18 @@ export default
 		# The IntersectionObserver root margin adds offsets to when the now and
 		# fully get updated.
 		inViewportRootMargin:
-			type: Number|String
+			type: [Number, String]
 			default: '0px 0px -1px 0px'
 
 		# Specify the IntersectionObserver root to use.
 		inViewportRoot:
-			type: String|Function|Object
+			type: [String, Function, Object]
 			default: undefined
 
 		# The IntersectionObserver threshold defines the intersection ratios that
 		# fire the observer callback
 		inViewportThreshold:
-			type: Number|Array
+			type: [Number, Array]
 			default: -> [0, 1] # Fire on enter/leave and fully enter/leave
 
 	# Bindings that are used by the host component
@@ -47,7 +47,7 @@ export default
 
 	# Lifecycle hooks
 	mounted: -> @$nextTick(@inViewportInit)
-	destroyed: -> @removeInViewportHandlers()
+	unmounted: -> @removeInViewportHandlers()
 
 	computed:
 
@@ -78,11 +78,13 @@ export default
 		# If any of the Observer options change, re-init.
 		inViewportRootMargin: -> @reInitInViewportMixin()
 		inViewportRoot: -> @reInitInViewportMixin()
-		inViewportThresholdWithMax: (now, old) ->
+		inViewportThresholdWithMax:
 
-			# In IE, this kept getting retriggered, so doing a manual comparison
-			# of old and new before deciding whether to take action.
-			@reInitInViewportMixin() unless now.toString() == old.toString()
+			handler: (now, old) ->
+				# In IE, this kept getting retriggered, so doing a manual comparison
+				# of old and new before deciding whether to take action.
+				@reInitInViewportMixin() unless now.toString() == old.toString()
+			deep: true
 
 	# Public API
 	methods:
