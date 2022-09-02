@@ -1,5 +1,5 @@
 // Storybook deps
-import { storiesOf, addDecorator } from '@storybook/vue'
+import { storiesOf, addDecorator } from '@storybook/vue3'
 import {
 	withKnobs,
 	number,
