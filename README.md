@@ -42,8 +42,10 @@ This package depends on the [IntersectionObserver](https://developer.mozilla.org
 		</transition>
 	</div>
 	```
-	
+
 * It's worth noting that the IntersectionObserver counts an element as intersecting the viewport when it's top offset is equal to the height of height of the page.  For instance, if you have an element with `margin-top: 100vh`, that actually counts as intersecting and this mixin will have `inViewport.now == true`.
+
+* If your component's height changes, you should call this.reInitInViewportMixin() to recreate the `IntersectionObserver` instance with the new, calculated `threshold`.
 
 ## Props
 

@@ -198,9 +198,9 @@ var _default2 = {
       target = _slice$call2$.boundingClientRect;
       root = _slice$call2$.rootBounds;
 
-      if (!target || !root) {
-        this.removeInViewportHandlers();
-        return;
+      if (!(target && root)) {
+        // Cleanup if root is missing, like if the element is removed from DOM
+        return this.removeInViewportHandlers();
       } // Get the maximum threshold ratio, which is less than 1 when the
       // element is taller than the viewport. The height may be 0 when the
       // parent element is hidden.
