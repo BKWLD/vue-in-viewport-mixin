@@ -73,7 +73,9 @@ var _default2 = {
         // Is partially or fully below the viewport
         // Internal props
         listening: false,
-        maxThreshold: 1
+        maxThreshold: 1,
+        // Derived props from intersection observer primitives
+        isIntersecting: false
       }
     };
   },
@@ -191,7 +193,7 @@ var _default2 = {
     // Handle state changes.  There should only ever be one entry and we're
     // destructuring the properties we care about since they have long names.
     updateInViewport: function updateInViewport(arg) {
-      var arg, root, target;
+      var arg, isIntersecting, root, target;
 
       var _slice$call = slice.call(arg, -1);
 
@@ -200,14 +202,17 @@ var _default2 = {
       var _slice$call2$ = _slice$call2[0];
       target = _slice$call2$.boundingClientRect;
       root = _slice$call2$.rootBounds;
+      isIntersecting = _slice$call2$.isIntersecting;
 
       if (!(target && root)) {
         // Cleanup if root is missing, like if the element is removed from DOM
         return this.removeInViewportHandlers();
-      } // Get the maximum threshold ratio, which is less than 1 when the
+      } // Store native isIntersecting value, helpful in iframe scenarios
+
+
+      this.inViewport.isIntersecting = isIntersecting; // Get the maximum threshold ratio, which is less than 1 when the
       // element is taller than the viewport. The height may be 0 when the
       // parent element is hidden.
-
 
       this.inViewport.maxThreshold = target.height > 0 ? Math.min(1, root.height / target.height) : 1; // Check if some part of the target is in the root box.  The isIntersecting
       // property from the IntersectionObserver was not used because it reports
