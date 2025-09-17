@@ -45,6 +45,9 @@ export default
 		listening: false
 		maxThreshold: 1
 
+		# Derived props from intersection observer primitives
+		isIntersecting: false
+
 	# Lifecycle hooks
 	mounted: -> @$nextTick(@inViewportInit)
 	unmounted: -> @removeInViewportHandlers()
@@ -132,11 +135,14 @@ export default
 		# destructuring the properties we care about since they have long names.
 		updateInViewport: ([..., {
 				boundingClientRect: target,
-				rootBounds: root
+				rootBounds: root,
+				isIntersecting
 			}]) ->
 
 			# Cleanup if root is missing, like if the element is removed from DOM
 			return @removeInViewportHandlers() unless target and root
+
+			@inViewport.isIntersecting = isIntersecting
 
 			# Get the maximum threshold ratio, which is less than 1 when the
 			# element is taller than the viewport. The height may be 0 when the
