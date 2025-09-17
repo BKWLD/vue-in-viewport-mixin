@@ -142,6 +142,7 @@ export default
 			# Cleanup if root is missing, like if the element is removed from DOM
 			return @removeInViewportHandlers() unless target and root
 
+			# Store native isIntersecting value, helpful in iframe scenarios
 			@inViewport.isIntersecting = isIntersecting
 
 			# Get the maximum threshold ratio, which is less than 1 when the
