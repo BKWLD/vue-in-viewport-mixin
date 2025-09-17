@@ -70,6 +70,7 @@ data: {
 		fully: Boolean // Is the component completely in the viewport?
 		above: Boolean // Is any part of the component above the viewport?
 		below: Boolean // Is any part of the component below the viewport?
+		isIntersecting: Boolean // Native intersectionObserver flag
 	}
 }
 ```
